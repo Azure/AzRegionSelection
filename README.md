@@ -9,14 +9,14 @@
 
 Multi-Factor Region Analysis: Analyses Azure regions against a wide range of criteria crucial for decision-making. 
 It checks:
-*service availability, 
-*cost differences, 
-*regulatory compliance, 
-*geopolitical factors, 
-*performance impacts, 
-*and sustainability metrics 
+* service availability
+* cost differences
+* regulatory compliance
+* geopolitical factors
+* performance impacts
+* and sustainability metrics
 
-for each potential region. 
+for each potential region.
 
 This holistic approach ensures you consider all angles (technical, business, and environmental) when comparing cloud regions.
 
