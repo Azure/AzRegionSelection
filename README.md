@@ -1,5 +1,7 @@
 # Region Selection Toolkit :wave:
 **(This project is under active development, so expect ongoing improvements and updates.)**
+This project is next phase of Azure to Azure Migration tooltik that is developed by 
+@jfaurskov , @Pla5ma,  
 
 ## Project Description
 
