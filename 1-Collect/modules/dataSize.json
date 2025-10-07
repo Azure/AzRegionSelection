@@ -1,0 +1,16 @@
+[
+  {
+    "resourceType": "microsoft.storage/storageaccounts",
+    "cmdLine": "((Get-AzMetric -ResourceId $ResourceId).Data.average)/(1024*1024*1024)",
+    "description": "Get data size for a storage account",
+    "isContainedInOriginalGraphOutput": false
+  },
+  {
+    "resourceType": "microsoft.Compute/disks",
+    "property": "properties.diskSizeGB",
+    "description": "Get data size for a managed disk",
+    "isContainedInOriginalGraphOutput": true
+  }
+]
+// #VM disks sizes
+// # net app (Az and size)

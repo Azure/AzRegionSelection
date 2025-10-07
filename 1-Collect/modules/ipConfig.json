@@ -1,0 +1,21 @@
+[
+  {
+    "resourceType": "microsoft.Network/publicipaddresses",
+    "description": "Get IP address for a public IP address",
+    "property": "properties.ipAddress",
+    "isContainedInOriginalGraphOutput": true
+  },
+  {
+    "resourceType": "microsoft.Network/virtualnetworks",
+    "description": "Get IP address space for a virtual network",
+    "property": "properties.addressSpace.addressPrefixes",
+    "isContainedInOriginalGraphOutput": true
+  }
+  ,
+  {
+    "resourceType": "microsoft.network/networkinterfaces",
+    "description": "Get IP address space for a NIC",
+    "property": "properties.ipConfigurations.properties.privateIPAddress",
+    "isContainedInOriginalGraphOutput": true
+  }
+]
