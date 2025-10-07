@@ -1,7 +1,7 @@
 # Wiki content
 
 - [Wiki Home](./Home)
-- [Introduction to Azure 2 Azure Migration Toolkit](./Introduction-to-azure2azure-migration-toolkit)
+- [Introduction to Region Seleciton Toolkit](./Introduction-to-toolkit)
 - [Frequently Asked Questions](./FAQ)
 - [Contributing](./Contributing)
 - [Known Issues](./KnownIssues)
