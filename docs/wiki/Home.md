@@ -1,6 +1,6 @@
-# Welcome to the Azure to Azure migration toolkit wiki
+# Welcome to the Region Selection toolkit wiki
 
-This wiki documents the current situation during the development of the Azure to Azure migration toolkit.
+This wiki documents the current situation during the development of the Region Selection toolkit.
 
 ## Navigation
 
