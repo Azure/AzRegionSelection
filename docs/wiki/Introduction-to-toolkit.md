@@ -1,6 +1,6 @@
 # Background
 
-This guide describes how to leverage the Azure to Azure migration toolkit when migrating your workload from one Azure region to another.  
+This guide describes how to leverage the Region selection toolkit toolkit when checking can your current Azure workload be deployed in another region.  
 
 > Note that this is a preview solution intended to encourage feedback for further development which should be tested in a safe environment before using in production to protect against possible failures/unnecessary cost.
 > Also note that this repo is public and as such you should never upload or otherwise divulge sensitive information to this repo. If there is any concern, please contact your Microsoft counterparts for detailed advice.

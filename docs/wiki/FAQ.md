@@ -1,6 +1,6 @@
 # Frequently Asked Questions
 
-Does the Azure to Azure migration toolkit work on Mac?
+Does the Region Selection toolkit toolkit work on Mac?
     Yes it does.
 
     - Follow the below steps as pre-requisites so that you can successfully use A2ATK on a Mac.
