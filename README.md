@@ -1,8 +1,13 @@
 # Region Selection Toolkit :wave:
 **(This project is under active development, so expect ongoing improvements and updates.)**
 
-Project contribution
+**Project contribution**
 
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit Contributor License Agreements.
+
+This project has adopted the Microsoft Open Source Code of Conduct. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+
+Details on contributing to this repo can be found here in the wiki
 
 ## Project Description
 
@@ -42,5 +47,4 @@ for each potential region.
 
  After analysis, the toolkit produces a clear report or summary of findings. You’ll get a list of recommended region(s) ranked or filtered based on the defined criteria, along with the reasoning (e.g. “Region A is recommended due to full service availability and lowest cost, with moderate sustainability score”). This report can be used to present options to stakeholders or as a blueprint for the actual migration/deployment.
 
-## Getting started
 
