@@ -1,6 +1,9 @@
 # Region Selection Toolkit :wave:
 **(This project is under active development, so expect ongoing improvements and updates.)**
 
+Project contribution
+
+
 ## Project Description
 
 **Region Selection Toolkit** is a comprehensive solution for guiding Cloud Solution Architects, Solution Engineers and IT teams in selecting the optimal Microsoft Azure region for their workloads. This toolkit automates the complex analysis required when deciding “Which Azure region should we deploy to?”. It evaluates multiple factors – from service availability and compliance to sustainability and performance – to recommend the best region(s) for a given set of cloud resources. The goal is to streamline regional planning for scenarios such as migrating to a new Azure region, expanding an application into additional regions, or choosing a region for a new deployment.
@@ -40,3 +43,4 @@ for each potential region.
  After analysis, the toolkit produces a clear report or summary of findings. You’ll get a list of recommended region(s) ranked or filtered based on the defined criteria, along with the reasoning (e.g. “Region A is recommended due to full service availability and lowest cost, with moderate sustainability score”). This report can be used to present options to stakeholders or as a blueprint for the actual migration/deployment.
 
 ## Getting started
+
