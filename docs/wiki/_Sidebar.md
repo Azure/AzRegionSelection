@@ -1,8 +1,8 @@
 # Wiki content
 
-- [What is Regions selection toolkit](./Home)
-- [How to use Region Seleciton Toolkit](./how-to-toolkit)
-- [Frequently Asked Questions](./FAQ)
-- [Contributing](./Contributing)
+- [What is Regions selection toolkit](./Home.md)
+- [How to use Region Seleciton Toolkit](./ToolkitHowTo.md)
+- [Frequently Asked Questions](./FAQ.md)
+- [Contributing](./Contribution.md)
 - [Known Issues](./KnownIssues)
-- [Telemetry](./Telemetry)
+- [Telemetry](./Telemetry.md)
