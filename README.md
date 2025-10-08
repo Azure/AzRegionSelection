@@ -1,15 +1,18 @@
 # Region Selection Toolkit :wave:
 **(This project is under active development, so expect ongoing improvements and updates.)**
-This project is next phase of Azure to Azure Migration toolkit.
+This project is next phase of Azure to Azure Migration toolkit driven by [jfaurskov] (https://github.com/jfaurskov) and with contribution by:
+[Pla5ma](https://github.com/Pla5ma)
+[ChiaChun](https://github.com/ChiaChun0)
+[warrendt](https://github.com/warrendt)
 
 ## Wiki navigation
 
 - [What is Regions selection toolkit](./docs/wiki/Home.md)
-- [How to use Region Selection Toolkit](./docs/wiki/how-to-toolkit)
-- [Frequently Asked Questions](./docs/wiki/FAQ)
-- [Contributing](./docs/wiki/Contributing)
-- [Known Issues](./docs/wiki/KnownIssues)
-- [Telemetry](./docs/wiki/Telemetry)
+- [How to use Region Selection Toolkit](./docs/wiki/ToolkitHowTo.md)
+- [Frequently Asked Questions](./docs/wiki/FAQ.md)
+- [Contributing](./docs/wiki/Contribution.md)
+- [Known Issues](./docs/wiki/KnownIssues.md)
+- [Telemetry](./docs/wiki/Telemetry.md)
 
 ## Project Description
 
