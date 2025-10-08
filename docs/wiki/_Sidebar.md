@@ -1,7 +1,7 @@
 # Wiki content
 
-- [Wiki Home](./Home)
-- [Introduction to Region Seleciton Toolkit](./Introduction-to-toolkit)
+- [What is Regions selection toolkit](./Home)
+- [How to use Region Seleciton Toolkit](./how-to-toolkit)
 - [Frequently Asked Questions](./FAQ)
 - [Contributing](./Contributing)
 - [Known Issues](./KnownIssues)

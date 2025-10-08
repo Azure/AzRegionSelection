@@ -4,12 +4,13 @@ This wiki documents the current situation during the development of the Region S
 
 ## Navigation
 
-- [Wiki Home](./Home)
-- [How to use Region Seleciton Toolkit](./how-to-toolkit)
+- [How to use Region Seleciton Toolkit](./ToolkitHowTo)
 - [Frequently Asked Questions](./FAQ)
-- [Contributing](./Contributing)
+- [Contributing](./Contribution)
 - [Known Issues](./KnownIssues)
 - [Telemetry](./Telemetry)
+
+# What is Regions selection toolkit
 
 ## Project Description
 

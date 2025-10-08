@@ -4,8 +4,8 @@ This project is next phase of Azure to Azure Migration toolkit.
 
 ## Wiki navigation
 
-- [Wiki Home](./docs/wiki/Home.md)
-- [How to use Region Seleciton Toolkit](./docs/wiki/how-to-toolkit)
+- [What is Regions selection toolkit](./docs/wiki/Home.md)
+- [How to use Region Selection Toolkit](./docs/wiki/how-to-toolkit)
 - [Frequently Asked Questions](./docs/wiki/FAQ)
 - [Contributing](./docs/wiki/Contributing)
 - [Known Issues](./docs/wiki/KnownIssues)
@@ -18,8 +18,6 @@ This project is next phase of Azure to Azure Migration toolkit.
 This holistic approach ensures you consider all angles (technical, business, and environmental) when comparing cloud regions.
 
 *Note: The Region Selection Toolkit is designed with extensibility in mind. Its modular architecture means additional factors (e.g. capacity planning data or more detailed latency testing) can be incorporated over time. New Azure regions and services are continually updated to keep recommendations current.*
-
-
 
 ## Project contribution
 
