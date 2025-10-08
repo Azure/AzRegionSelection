@@ -2,14 +2,6 @@
 
 This wiki documents the current situation during the development of the Region Selection toolkit.
 
-## Navigation
-
-- [How to use Region Seleciton Toolkit](./ToolkitHowTo)
-- [Frequently Asked Questions](./FAQ)
-- [Contributing](./Contribution)
-- [Known Issues](./KnownIssues)
-- [Telemetry](./Telemetry)
-
 # What is Regions selection toolkit
 
 ## Project Description
