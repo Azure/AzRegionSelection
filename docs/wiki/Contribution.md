@@ -8,7 +8,7 @@
   - [Required Tooling](#required-tooling)
   - [Recommended Tooling](#recommended-tooling)
 - [Formatting Guidelines](#formatting-guidelines)
-  - [Code Styling](#code-styling)
+- [Code Styling](#code-styling)
 - [Git Information on Contributing](#git-information-on-contributing)
 
 ---
