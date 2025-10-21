@@ -10,11 +10,12 @@ Before using the toolkit, ensure the following prerequisites are met:
 
 - **Environment:** Prepare a PowerShell environment to run the toolkit. The toolkit is implemented in PowerShell scripts, so you can run it on Windows, Linux, or in the Azure Cloud Shell. Ensure you have **PowerShell Core 7.5.1** or later installed.
 
-- **Azure PowerShell Modules:** Install the necessary Azure PowerShell modules (if using Azure Cloud Shell, these are already available).
+- **Azure PowerShell Modules:** Install the necessary Azure PowerShell modules.
 
   - Azure Powershell module `Az.ResourceGraph 1.2.0` or later
   - Azure Powershell module `Az.Accounts 4.1.0` or later
-    
+  - Azure Powershell module `Az.CostManagement 0.4.2` or later
+
   If using Azure migrate as input file:
   - Azure Powershell module `Az.Monitor 5.2.2` or later
   - Azure Powershell `ImportExcel` module for Azure Migrate script
