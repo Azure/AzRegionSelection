@@ -27,9 +27,6 @@ To obtain the Region Selection Toolkit on your machine or environment:
 
 2. **Directory Structure:** After retrieval, you should have a directory containing the toolkit scripts. Key sub-folders include `1-Collect`, `2-AvailabilityCheck`, `3-CostInformation`, and `7-Report` (these correspond to different stages of the analysis). It’s important to keep this structure intact. You do **not** need to compile anything – the toolkit is ready to run via PowerShell scripts.
 
-> [!NOTE]
-> Ensure your environment (local machine or Cloud Shell) has network access to Azure endpoints. The toolkit may call Azure APIs (for resource data and pricing information), so an internet connection is required when running it.
-
 ## Input Data: Providing a Workload Inventory
 The first step in using the toolkit is to provide an inventory of the workload’s Azure resources. The Region Selection Toolkit supports two main input methods for this inventory:
 
