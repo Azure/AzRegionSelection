@@ -47,7 +47,7 @@ Get-Region.ps1 -Region <Target-region>
 
 ## Run 3-CostInformation (Cost Analysis)
 
-The Azure public pricing API is used, meaning that, prices are **not** customer-specific, but are only used to calculate the relative cost difference between regions for each meter ID.
+The Azure public pricing API is used, meaning that, prices are **not** customer-specific, but are only used to calculate the relative cost difference between regions for each meter ID. Please see [3-CostInformation](3-CostInformation.md) for more details.
 
 Navigate to the `3-CostInformation` folder and run the script using the `Perform-RegionComparison.ps1` script to do cost comparison with target Region(s). 
 
