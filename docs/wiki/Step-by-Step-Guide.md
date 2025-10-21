@@ -11,9 +11,9 @@ Once your environment is ready and you have determined the input method, follow 
 Open a PowerShell prompt in the toolkit’s directory. If you’re in Azure Cloud Shell, you can navigate to the folder where you cloned the toolkit.
 - **Log in to Azure:** Run `Connect-AzAccount` to authenticate to Azure.
 
-## 1. Run 1-Collect (Inventory Collection)
+## Run 1-Collect (Inventory Collection)
 
-Run the script `Get-AzureServices.ps1` to collect the Azure resource inventory and properties, for yor relevant scope (resource group, subscription or multiple subscriptions). The script will generate a  `resources.json` and a `summary.json` file in the same directory. The `resources.json` file contains the full inventory of resources and their properties, while the `summary.json` file contains a summary of the resources collected. For examples on how to run the script for different scopes please see [1-Collect scope examples](1-Collect.md).
+Run the script `Get-AzureServices.ps1` to collect the Azure resource inventory and properties, for yor relevant scope (resource group, subscription or multiple subscriptions). The script will generate a  `resources.json` and a `summary.json` file in the same directory. The `resources.json` file contains the full inventory of resources and their properties, while the `summary.json` file contains a summary of the resources collected. For examples on how to run the script for different scopes please see [1-Collect Examples](1-Collect.md).
 
 **If using Azure Resource Graph:** 
 
@@ -29,41 +29,23 @@ Get-RessourcesFromAM.ps1 -filePath "C:\path\to\Assessment.xlsx" -outputFile "C:\
 > [!NOTE]
 > Before proceeding, make sure that the output files (`resources.json`, `summary.json` and a `CSV file`) are generated in the `1-Collect` folder.
 
-## 2. Run 2-AvailabilityCheck (Service Availability)
-After collecting inventory, continue with `Get-AvailabilityInformation.ps1`. This script evaluates the availability of Azure services, resources, and SKUs across all regions. When combined with the output from the 1-Collect script, it provides a comprehensive overview of potential migration destinations, identifying feasible regions and the reasons for their suitability or limitations, such as availability constraints per region.
+## Run 2-AvailabilityCheck (Service Availability)
 
-Note that this functionality is not yet complete and is a work in progress. Currently, this script associates every resource with its regional availability. Additionally, it maps the following SKUs to the regions where they are supported:
-- microsoft.compute/disks
-- microsoft.compute/virtualmachines
-- microsoft.sql/managedinstances
-- microsoft.sql/servers/databases
-- microsoft.storage/storageaccounts
+This script will check the availability of the services in the target region based on the inventory collected in the previous step. Note that this functionality is not yet complete and is a work in progress. For examples on how to run the script please see [2-AvailabilityCheck Examples](2-AvailabilityCheck.md)
 
-The `Get-AvailabilityInformation.ps1` script only needs to be run once to collect the availability information for all regions, which takes a little while. Run the following script: 
+After collecting inventory, continue with `Get-AvailabilityInformation.ps1`. It will generate a number of json files in the same directory the important one is the `Availability_Mapping.json` Run the following script: 
 
 ```powershell
 Get-AvailabilityInformation.ps1
 ```
-It will generate a number of json files in the same directory the important one is the `Availability_Mapping.json`
 
-To check the availability of the resources in scope in a specific region run following script:
+Check the availability of the resources in scope for a specific region. This will generate a file named `Availability_Mapping_<Region>.json` in the same directory. Run the following script:
 
 ```powershell
 Get-Region.ps1 -Region <Target-region>
 ```
-This will generate `Availability_Mapping_<Region>.json` in the same directory. 
 
-Example:
-```powershell
-Get-AvailabilityInformation.ps1
-# Wait for the script to complete, this may take a while.
-Get-Region.ps1 -region <target-region1>
-# Example1: Get-Region.ps1 -region "east us"
-# Example2: Get-Region.ps1 -region "west us"
-# Example3: Get-Region.ps1 -region "sweden central"
-```
-
-## 3. Run 3-CostInformation (Cost Analysis)
+## Run 3-CostInformation (Cost Analysis)
 
 The Azure public pricing API is used, meaning that, prices are **not** customer-specific, but are only used to calculate the relative cost difference between regions for each meter ID.
 
@@ -77,7 +59,7 @@ $regions = @("eastus", "brazilsouth", "australiaeast")
 
 This will generate `region_comparison_RegionComparison.json` file
 
-## 4. 7-Report
+## Run 7-Report
 
 This script generates formatted Excel (`.xlsx`)reports based on the output from the previous check script. 
 
