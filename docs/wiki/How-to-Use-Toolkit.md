@@ -102,7 +102,9 @@ Get-Region.ps1 -region <target-region1>
 ```
 
 ### 3. Run 3-CostInformation (Cost Analysis)
-This script uses public API to compare cost between the exsiting resource region and the one or more target regions. For this we use the Microsoft.CostManagement provider of each subscription. It will query the cost information for the resources collected in the previous step and compare cost diffrences of the regions in scope and generate a `cost.json` file in the same directory. Note that this is just standard pricing, which means customer discounts are **not** included.
+This step contains two scripts. One that retrives cost information about resources inscope and second script uses public API to compare cost between the exsiting resource region and the one or more target regions. 
+
+For this we use the Microsoft.CostManagement provider of each subscription. It will query the cost information for the resources collected in the previous step and compare cost diffrences of the regions in scope and generate a `cost.json` file in the same directory. Note that this is just standard pricing, which means customer discounts are **not** included.
 
 The input file is `resources.json` produced by the `1-Collect` script.
 
