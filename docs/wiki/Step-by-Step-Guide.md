@@ -52,7 +52,7 @@ The Azure public pricing API is used, meaning that, prices are **not** customer-
 Navigate to the `3-CostInformation` folder and run the script using the `Perform-RegionComparison.ps1` script to do cost comparison with target Region(s). 
 
 For example:
-``` text
+```powershell
 $regions = @("eastus", "brazilsouth", "australiaeast")
 .\Perform-RegionComparison.ps1 -regions $regions -outputFormat json -reso
 ```
