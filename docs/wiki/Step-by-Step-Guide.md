@@ -12,7 +12,7 @@ Open a PowerShell prompt in the toolkit’s directory. If you’re in Azure Clou
 - **Log in to Azure:** Run `Connect-AzAccount` to authenticate to Azure.
 - **Select the target subscription/s:** If you have multiple subscriptions, ensure the correct one is active. Use `Select-AzSubscription` `-SubscriptionId <YourSubscriptionID>` to switch the context to the subscription that contains the resources you want to analyse. This ensures all subsequent operations run against the intended subscription.
 
-### 1. Run 1-Collect (Inventory Collection)
+## 1. Run 1-Collect (Inventory Collection)
 Next, gather the inventory of resources that will be evaluated. Run the script `Get-AzureServices.ps1` to collect the Azure resource inventory and properties, for yor relevant scope (resource group, subscription or multiple subscriptions). The script will generate a  `resources.json` and a `summary.json` file in the same directory. The `resources.json` file contains the full inventory of resources and their properties, while the `summary.json` file contains a summary of the resources collected. 
 
 **If using Azure Resource Graph:** Run the `Get-AzureServices.ps1` script with your target scope. For example:
@@ -47,9 +47,9 @@ Get-AzureServices.ps1 -multiSubscription -workloadFile <path-to-workload-file>
 Get-RessourcesFromAM.ps1 -filePath "C:\path\to\Assessment.xlsx" -outputFile "C:\path\to\summary.json"
 ```
 > [!NOTE]
-> Before proceeding, make sure that the output files are successful generated in the `1-Collect` folder with the name `resources.json` as well as `summary.json`.
+> Before proceeding, make sure that the output files are successful generated in the `1-Collect` folder with the name `resources.json`, `summary.json` and a `CSV file` if cost was included.
 
-### 2. Run 2-AvailabilityCheck (Service Availability)
+## 2. Run 2-AvailabilityCheck (Service Availability)
 After collecting inventory, continue with `Get-AvailabilityInformation.ps1`. This script evaluates the availability of Azure services, resources, and SKUs across all regions. When combined with the output from the 1-Collect script, it provides a comprehensive overview of potential migration destinations, identifying feasible regions and the reasons for their suitability or limitations, such as availability constraints per region.
 
 Note that this functionality is not yet complete and is a work in progress. Currently, this script associates every resource with its regional availability. Additionally, it maps the following SKUs to the regions where they are supported:
@@ -83,7 +83,7 @@ Get-Region.ps1 -region <target-region1>
 # Example3: Get-Region.ps1 -region "sweden central"
 ```
 
-### 3. Run 3-CostInformation (Cost Analysis)
+## 3. Run 3-CostInformation (Cost Analysis)
 
 The Azure public pricing API is used, meaning that, prices are **not** customer-specific, but are only used to calculate the relative cost difference between regions for each meter ID.
 
@@ -97,7 +97,38 @@ $regions = @("eastus", "brazilsouth", "australiaeast")
 
 This will generate `region_comparison_RegionComparison.json` file
 
+## 4. 7-Report
 
+This script generates formatted Excel (`.xlsx`)reports based on the output from the previous check script. 
+
+Navigate to the `7-Report` folder and run the `Get-Report.ps1`, also specify the path to the availability information and the cost comparision path. For example:
+
+```powershell
+.\Get-Report.ps1 -availabilityInfoPath ..\2-AvailabilityCheck\Availability_Mapping_<Region>.json -costComparisonPath ..\3-CostInformation\region_comparison_RegionComparison.json
+```
+The script generates an `.xlsx` file in the `7-report` folder, named `Availability_Report_CURRENTTIMESTAMP`.
+
+Open the generated Excel file. The reports provide detailed information for each service, including:
+
+### Service Availability Report
+
+- **Resource type**
+- **Resource count**
+- **Implemented (origin) regions**
+- **Implemented SKUs**
+- **Availability in the Selected (target) regions**
+
+## Cost Comparison Report
+
+- **Meter ID**
+- **Service Name**
+- **Meter Name**
+- **Product Name**
+- **SKU Name**
+- **Retail Price per region**
+- **Price Difference to origin region per region**
+
+These reports help you analyze service compatibility and cost differences across different regions.
 
 
 
