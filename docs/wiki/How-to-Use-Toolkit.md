@@ -4,6 +4,7 @@ _This page is a practical guide for running the Region Selection Toolkit, helpin
 ## Prerequisites
 Before using the toolkit, ensure the following prerequisites are met:
 - **Azure Subscription Access:** You should have access to the Azure subscription(s) containing the workload you want to analyse. At minimum, read permissions (e.g. **Azure Reader role**) on the relevant resources are required to gather inventory. If analysing a planned deployment (with no existing Azure resources yet), you can skip resource access but will need an Azure Migrate assessment export (see Input Data below).
+- To run `3-CostInformation`, ensure that you have **Cost Management Reader access** to all subscriptions in scope.
 
 - **Environment:** Prepare a PowerShell environment to run the toolkit. The toolkit is implemented in PowerShell scripts, so you can run it on Windows, Linux, or in the Azure Cloud Shell (which comes pre-configured with Azure PowerShell). Ensure you have **PowerShell 7.x (Core)** installed (PowerShell 7.5.1 or later is recommended).
 
@@ -36,48 +37,137 @@ The first step in using the toolkit is to provide an inventory of the workload�
 ## Running the Toolkit Step-by-Step
 Once your environment is ready and you have determined the input method, follow these steps to run the Region Selection Toolkit. It’s important to run the stages in order, as each stage uses data from the previous one. The steps below assume you’re using PowerShell:
 
-### 1. Authenticate and Set Context
+### Authenticate and Set Context
 Open a PowerShell prompt in the toolkit’s directory. If you’re in Azure Cloud Shell, you can navigate to the folder where you cloned the toolkit.
 - **Log in to Azure:** Run `Connect-AzAccount` if you haven’t already authenticated. This will open a browser prompt (or use device code flow in Cloud Shell) for Azure login. After logging in, your session is connected to Azure.
 - **Select the target subscription:** If you have multiple subscriptions, ensure the correct one is active. Use `Select-AzSubscription` `-SubscriptionId <YourSubscriptionID>` to switch the context to the subscription that contains the resources you want to analyse. This ensures all subsequent operations run against the intended subscription. (If you have only one subscription or have already set the context, this step is done automatically by Connect-AzAccount.)
 
-### 2. Run 1-Collect (Inventory Collection)
-Next, gather the inventory of resources that will be evaluated:
-- **If using Azure Resource Graph (existing Azure resources):** Run the collection script with your target scope. For example:
+### 1. Run 1-Collect (Inventory Collection)
+Next, gather the inventory of resources that will be evaluated. Run the script `Get-AzureServices.ps1` to collect the Azure resource inventory and properties, for yor relevant scope (resource group, subscription or multiple subscriptions). The script will generate a  `resources.json` and a `summary.json` file in the same directory. The `resources.json` file contains the full inventory of resources and their properties, while the `summary.json` file contains a summary of the resources collected. 
+
+**If using Azure Resource Graph:** Run the collection script with your target scope. For example:
+
+- To collect the inventory for a single resource group, run the script as follows:
+
 ```powershell
-# Run inventory collection for a subscription
-PS> cd 1-Collect
-PS> .\1-Collect.ps1 -SubscriptionId "<SUBSCRIPTION_ID>" -OutputFile "inventory.json"
+Get-AzureServices.ps1 -scopeType resourceGroup -resourceGroupName <resource-group-name> -subscriptionId <subscription-id>
 ```
-Replace `<SUBSCRIPTION_ID>` with your Azure Subscription ID (or you might use `-SubscriptionName "Name"` if supported by the script). This will query Azure Resource Graph and collect details of resources in that subscription. The script will likely output the collected inventory to a file (e.g., `inventory.json` or a similar format) or to an in-memory object that subsequent scripts will use. If your scope is a resource group or management group, use the appropriate parameters (check script help by running `Get-Help .\1-Collect.ps1 -Full` for available options).
 
-- **If using an Azure Migrate export:** Ensure the Azure Migrate data file is accessible (for example, copied into the toolkit directory or a known path). Run the collection script with a parameter to import that file. For example:
+- To collect the inventory for a single subscription, run the script as follows:
+
 ```powershell
-PS> cd 1-Collect
-PS> .\1-Collect.ps1 -ImportFile "MyMigrateExport.csv" -OutputFile "inventory.json"
+Get-AzureServices.ps1 -scopeType subscription -subscriptionId <subscription-id>
 ```
-The script will parse the Azure Migrate assessment data and produce the inventory in the format needed for the next steps.
-The output of `1-Collect` is a consolidated list of your workload’s resources and their attributes, which will be used to evaluate region compatibility. Once this step completes, you should have an inventory object or file ready. The console may show a summary (e.g., “100 resources collected from subscription XYZ”). If there are errors (like permission issues or file parse issues), address them before proceeding.
 
-### 2. Run 2-AvailabilityCheck (Service Availability and Compliance Analysis)
-With the inventory in hand, run the second stage to analyse Azure regions against service availability and related factors:
+- To collect the inventory for multiple subscriptions, you will need to create a json file containing the subscription ids in scope. See [here](./subscriptions.json) for a sample json file. Once the file is created, run the script as follows:
+
 ```powershell
-PS> cd ..\2-AvailabilityCheck
-PS> .\2-AvailabilityCheck.ps1 -Inventory "inventory.json" -Regions "all"
+Get-AzureServices.ps1 -multiSubscription -workloadFile <path-to-workload-file>
 ```
-This script takes the inventory (from the previous step) and checks which Azure regions can support those resources. It will likely compare each resource’s Azure service against a global services-by-region list. By default, the toolkit may evaluate **all public Azure regions** or a broad set of regions. You might have the option to limit the regions in consideration (for example, using a `-Regions` parameter as shown, where you could specify a list like `"westeurope,eastus2"` if you only want specific regions evaluated). If unspecified, it defaults to all relevant regions.
 
-During this step, the toolkit will:
-- Identify any regions where a required service is **not available**. Such regions would be marked as incompatible for your workload (or flagged for missing services).
-- Check for compliance or sovereignty flags (for example, if your inventory includes resources subject to data residency rules, the script might note which regions are in the same geography or meet specific compliance requirements). It may use predefined mappings (e.g., marking government cloud regions, EU regions, etc.).
+**If using an Azure Migrate export:** Ensure the Azure Migrate data file is accessible. Run `Get-RessourcesFromAM.ps1` against an Azure Migrate `Assessment.xlsx` file to convert the VM & Disk SKUs into the same output as `Get-AzureServices.ps1` For example:
 
-The output of this stage is typically an interim analysis which shows, for each region (or each resource vs region matrix), the availability result. This might be saved to an output file like `availability.json` or similar. The details might include lists of any **unsupported services per region** or compliance notes (e.g., “Region X is in Gov cloud, skipped unless specifically needed” as a note).
+```powershell
+Get-RessourcesFromAM.ps1 -filePath "C:\path\to\Assessment.xlsx" -outputFile "C:\path\to\summary.json"
+```
+> [!NOTE]
+> Before proceeding, get sure that the output files are successful generated in the `1-Collect` folder with the name `resources.json` as well as `summary.json`.
+
+### 2. Run 2-AvailabilityCheck (Service Availability)
+After collecting inventory, continue with `2-AvailabilityCheck/Get-AvailabilityInformation.ps1`. This script evaluates the availability of Azure services, resources, and SKUs across different regions. When combined with the output from the `1-Collect` script, it provides a comprehensive overview of potential migration destinations, identifying feasible regions and the reasons for their suitability or limitations, such as availability constraints per region.
+
+It will generate a `services.json` file in the same directory, which contains the availability information for the services in the target region. Note that this functionality is not yet complete and is a work in progress.
+
+Currently, this script associates every resource with its regional availability. Additionally, it maps the following SKUs to the regions where they are supported:
+* microsoft.compute/disks
+* microsoft.compute/virtualmachines
+* microsoft.sql/managedinstances
+* microsoft.sql/servers/databases
+* microsoft.storage/storageaccounts
+
+1. Navigate to the `2-AvailabilityCheck` folder and run the script using `.\Get-AvailabilityInformation.ps1`. The script will generate report files in the `2-AvailabilityCheck` folder.
+
+#### Per region filter script
+To check the availability of services in a specific region, it is necessary to first run the `Get-AvailabilityInformation.ps1` script which will collect service availability in all regions. The resulting json files is then used with the `Get-Region.ps1` script to determine specific service availability for one or more regions to be used for reporting eventually. Note that the `Get-AvailabilityInformation.ps1` script only needs to be run once to collect the availability information for all regions, which takes a little while. 
+
+After that, you can use the`Get-Region.ps1` script to check the availability of services in specific regions. Availability information is available in the `Availability_Mapping_<Region>.json` file, which is generated in the same directory as the script.
+
+```powershell
+Get-AvailabilityInformation.ps1
+# Wait for the script to complete, this may take a while.
+Get-Region.ps1 -region <target-region1>
+# Example1: Get-Region.ps1 -region "east us"
+# Example2: Get-Region.ps1 -region "west us"
+# Example3: Get-Region.ps1 -region "sweden central"
+```
 
 ### 3. Run 3-CostInformation (Cost Analysis)
-Next, run the cost comparison stage to evaluate cost differences across regions:
-```powershell
-PS> cd ..\3-CostInformation
-PS> .\3-CostInformation.ps1 -Inventory "inventory.json" -RegionAnalysis "availability.json" -OutputFile "costs.json"
+This script uses public API to compare cost between the exsiting resource region and the one or more target regions. For this we use the Microsoft.CostManagement provider of each subscription. It will query the cost information for the resources collected in the previous step and compare cost diffrences of the regions in scope and generate a `cost.json` file in the same directory. Note that this is just standard pricing, which means customer discounts are **not** included.
+
+The input file is `resources.json` produced by the `1-Collect` script.
+
+1. Requires Az.CostManagement module version 0.4.2.
+`PS1> Install-Module -Name Az.CostManagement`
+
+2. Navigate to the `3-CostInformation` folder and run the script using `.\Get-CostInformation.ps1`. The script will generate a CSV file in the current folder.
+
+#### Perform-RegionComparison.ps1
+
+This script builds on the collection step by comparing pricing across Azure regions for the meter ID's retrieved earlier.
+The Azure public pricing API is used, meaning that:
+- No login is needed for this step
+- Prices are *not* customer-specific, but are only used to calculate the relative cost difference between regions for each meter
+
+As customer discounts tend to be linear (for example, ACD is a flat rate discount across all PAYG Azure spend), the relative price difference between regions can still be used to make an intelligent estimate of the cost impact of a workload move.
+
+Instructions for use:
+
+1. Prepare a list of target regions for comparison. This can be provided at the command line or stored in a variable before calling the script.
+2. Ensure the `resources.json` file is present (from the running of the collector script).
+2. Run the script using `.\Perform-RegionComparison.ps1`. The script will generate output files in the current folder.
+
+For example:
+``` text
+$regions = @("eastus", "brazilsouth", "australiaeast")
+.\Perform-RegionComparison.ps1 -regions $regions -outputType json
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
