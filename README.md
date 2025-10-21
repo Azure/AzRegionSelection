@@ -4,8 +4,9 @@ This project is next phase of Azure to Azure Migration toolkit driven by [jfaurs
 
 ## Wiki navigation
 
-- [What is Regions selection toolkit](./docs/wiki/Home.md)
-- [How to use Region Selection Toolkit](./docs/wiki/ToolkitHowTo.md)
+- [What is Regions selection toolkit](./docs/wiki/Introduction-to-Azure-Region-Selection-Toolkit.md)
+- [Getting Started](./docs/wiki/Setup-and-Prerequisites.md)
+- [How to use Region Selection Toolkit](./docs/wiki/Step-by-Step-Guide.md)
 - [Frequently Asked Questions](./docs/wiki/FAQ.md)
 - [Contributing](./docs/wiki/Contribution.md)
 - [Known Issues](./docs/wiki/KnownIssues.md)
