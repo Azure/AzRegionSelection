@@ -28,4 +28,9 @@ To obtain the Region Selection Toolkit on your machine or environment:
 > [!NOTE]
 > Ensure your environment (local machine or Cloud Shell) has network access to Azure endpoints. The toolkit may call Azure APIs (for resource data and pricing information), so an internet connection is required when running it.
 
+## Input Data: Providing a Workload Inventory
+The first step in using the toolkit is to provide an inventory of the workload’s Azure resources. The Region Selection Toolkit supports two main input methods for this inventory:
 
+**A.** **Automatic Inventory via Azure Resource Graph:** If the workload is already deployed in Azure, the toolkit can automatically collect the resource list. In this case, you’ll run the `1-Collect` script which uses Azure Resource Graph to retrieve all resources in the specified subscription or resource group. This requires the prerequisites above (Azure login and appropriate permissions). You will specify which subscription (or other scope) to query.
+
+**B.** **Import from Azure Migrate Assessment:** If you are planning a migration (for example, moving on-premises or other cloud workloads to Azure) and have used Azure Migrate to assess your environment, you can use that data as input. First, export the Azure Migrate assessment results (Azure Migrate allows exporting discovered VM and resource metadata to files such as Excel/CSV). Then, the toolkit’s `1-Collect` stage can ingest this file to create an inventory of resources. Ensure the exported data is in a format the toolkit expects (check the toolkit documentation for the exact file format or template required).
