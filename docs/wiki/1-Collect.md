@@ -11,7 +11,7 @@ Run the `Get-AzureServices.ps1` script with your target scope. For example:
 Get-AzureServices.ps1 -includeCost $true
 ```
 
-- To collect the inventory for a single resource group, run the script as follows:
+- To collect the inventory for a single resource group, cost not included, run the script as follows:
 
 ```powershell
 Get-AzureServices.ps1 -scopeType resourceGroup -resourceGroupName <resource-group-name> -subscriptionId <subscription-id>
