@@ -17,7 +17,7 @@ Get-AzureServices.ps1 -includeCost $true
 Get-AzureServices.ps1 -scopeType resourceGroup -resourceGroupName <resource-group-name> -subscriptionId <subscription-id>
 ```
 
-- To collect the inventory for a single subscription, run the script as follows:
+- To collect the inventory for a single subscription, cost not included, run the script as follows:
 
 ```powershell
 Get-AzureServices.ps1 -scopeType subscription -subscriptionId <subscription-id>
