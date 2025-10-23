@@ -1,6 +1,5 @@
-# Cost data retrieval and region comparison
-
-## About the scripts
+# 3-CostInformation 
+Cost data retrieval and region comparison
 
 ### Get-CostInformation.ps1
 
@@ -80,7 +79,7 @@ Instructions for use:
 
 #### Example
 
-``` text
+```powershell
 $regions = @("eastus", "brazilsouth", "australiaeast")
 .\Perform-RegionComparison.ps1 -regions $regions -outputType json
 ```
