@@ -1,6 +1,8 @@
 # Region Selection Toolkit :wave:
-**(This project is under active development, so expect ongoing improvements and updates.)**
-This project is next phase of Azure to Azure Migration toolkit driven by [jfaurskov](https://github.com/jfaurskov) and with contribution of [Pla5ma](https://github.com/Pla5ma), [ChiaChun](https://github.com/ChiaChun0) and [warrendt](https://github.com/warrendt).
+**(This project is under active development, so expect ongoing improvements and updates.)** <br>
+Azure Region Selection Toolkit is driven by [Linda Petersson](https://github.com/lvlindv) & [Jan Faurskov](https://github.com/jfaurskov).
+
+This project builds on the Azure2Azure TK with contributors: [Predrag Jelesijevic](https://github.com/prjelesi), [Donovan Hughes](https://github.com/dohughes-msft), [Daniel Hildebrandt](https://github.com/Pla5ma), [ChiaChun Wang](https://github.com/ChiaChun0), [Max Reusch](https://github.com/imnotfromhere), [S Jayaprakash](https://github.com/SJAYAP), [Sacha Narnix](https://github.com/Springstone) and [Warren](https://github.com/warrendt).
 
 ## Wiki navigation
 
