@@ -1,18 +1,15 @@
 # Region Selection Toolkit :wave:
-**(This project is under active development, so expect ongoing improvements and updates.)** <br>
+
+>[!NOTE]
+>**This project is actively under development, with ongoing improvements and updates.**
+
 Azure Region Selection Toolkit is driven by [Linda Petersson](https://github.com/lvlindv) & [Jan Faurskov](https://github.com/jfaurskov).
 
-This project builds on the Azure2Azure TK with contributors: [Predrag Jelesijevic](https://github.com/prjelesi), [Donovan Hughes](https://github.com/dohughes-msft), [Daniel Hildebrandt](https://github.com/Pla5ma), [ChiaChun Wang](https://github.com/ChiaChun0), [Max Reusch](https://github.com/imnotfromhere), [S Jayaprakash](https://github.com/SJAYAP), [Sacha Narnix](https://github.com/Springstone) and [Warren](https://github.com/warrendt).
+This project builds on the Azure2AzureTK with contributors: [Predrag Jelesijevic](https://github.com/prjelesi), [Donovan Hughes](https://github.com/dohughes-msft), [Daniel Hildebrandt](https://github.com/Pla5ma), [ChiaChun Wang](https://github.com/ChiaChun0), [Max Reusch](https://github.com/imnotfromhere), [S Jayaprakash](https://github.com/SJAYAP), [Sacha Narnix](https://github.com/Springstone) and [Warren](https://github.com/warrendt).
 
-## Wiki navigation
+## Explore the Wiki
 
-- [What is Regions selection toolkit](./docs/wiki/Introduction-to-Azure-Region-Selection-Toolkit.md)
-- [Getting Started](./docs/wiki/Setup-and-Prerequisites.md)
-- [How to use Region Selection Toolkit](./docs/wiki/Step-by-Step-Guide.md)
-- [Frequently Asked Questions](./docs/wiki/FAQ.md)
-- [Contributing](./docs/wiki/Contribution.md)
-- [Known Issues](./docs/wiki/KnownIssues.md)
-- [Telemetry](./docs/wiki/Telemetry.md)
+To find out more about the Region Selection Toolkit, please refer to the [documentation on our Wiki](https://github.com/Azure/AzRegionSelection/wiki)
 
 ## Project Description
 
