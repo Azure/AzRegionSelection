@@ -5,7 +5,7 @@
 
 Azure Region Selection Toolkit is driven by [Linda Petersson](https://github.com/lvlindv) & [Jan Faurskov](https://github.com/jfaurskov).
 
-This project builds on the Azure2AzureTK with contributors: [Predrag Jelesijevic](https://github.com/prjelesi), [Donovan Hughes](https://github.com/dohughes-msft), [Daniel Hildebrandt](https://github.com/Pla5ma), [ChiaChun Wang](https://github.com/ChiaChun0), [Max Reusch](https://github.com/imnotfromhere), [S Jayaprakash](https://github.com/SJAYAP), [Sacha Narnix](https://github.com/Springstone) and [Warren](https://github.com/warrendt).
+This project builds on the Azure2AzureTK with contributors: [Predrag Jelesijevic](https://github.com/prjelesi), [Donovan Hughes](https://github.com/dohughes-msft), [Daniel Hildebrandt](https://github.com/Pla5ma), [ChiaChun Wang](https://github.com/ChiaChun0), [Max Reusch](https://github.com/imnotfromhere), [S Jayaprakash](https://github.com/SJAYAP), [Sacha Narinx](https://github.com/Springstone) and [Warren du Toit](https://github.com/warrendt).
 
 ## Explore the Wiki
 
