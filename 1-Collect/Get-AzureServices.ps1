@@ -217,7 +217,7 @@ Function Invoke-CostReportSchedule {
         [Parameter(Mandatory = $true)] [string]$SubscriptionId
     )
     $uri = "https://management.azure.com/subscriptions/$($SubscriptionId)/providers/Microsoft.CostManagement/generateCostDetailsReport?api-version=2025-03-01"
-    $startDate =(Get-Date).AddDays(-1)
+    $startDate = (Get-Date).AddDays(-1)
     $endDate = (Get-Date)
     # Define the request body
     $body = @{
@@ -327,6 +327,13 @@ $baseResult | ForEach-Object {
     else {
         Get-Method -resourceType $resourceType -flagType "Sku" -object $PSItem
     }
+    $str = ""
+    foreach ($property in $sku.PSObject.Properties) {
+        $str += "$($property.value.ToString())_"
+    }
+    $str = $str.TrimEnd('_')
+    Add-Member -InputObject $sku -MemberType NoteProperty -Name "skuName" -Value $str -Force
+    
     Get-Method -resourceType $resourceType -flagType "resiliencyProperties" -object $PSItem
     Get-Method -resourceType $resourceType -flagType "dataSize" -object $PSItem
     Get-Method -resourceType $resourceType -flagType "ipConfig" -object $PSItem
@@ -356,7 +363,7 @@ $summary = @()
 foreach ($group in $groupedResources) {
     $resourceType = $group.Name
     $uniqueMeterIds = $group.Group | Select-Object -Property meterIds -Unique | Select-Object -ExpandProperty meterIds
-        $uniqueMeterIds = $uniqueMeterIds | Select-Object -Unique
+    $uniqueMeterIds = $uniqueMeterIds | Select-Object -Unique
     if ($uniqueMeterIds -isnot [System.Array]) {
         $uniqueMeterIds = @($uniqueMeterIds)
     }
@@ -367,10 +374,13 @@ foreach ($group in $groupedResources) {
     If ($group.Group.ResourceSku -ne 'N/A') {
 
         $uniqueSkus = $group.Group.ResourceSku | Select-Object * -Unique
-        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ResourceSkus = $uniqueSkus; AzureRegions = $uniqueLocations; meterIds = $uniqueMeterIds }
+        if ( $uniqueSkus -isnot [System.Array]) {
+            $uniqueSkus = @($uniqueSkus)
+        }
+        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = $uniqueSkus; ImplementedRegions = $uniqueLocations; meterIds = $uniqueMeterIds }
     }
     Else {
-        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ResourceSkus = @("N/A"); AzureRegions = $uniqueLocations; meterIds = $uniqueMeterIds }
+        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = @("N/A"); ImplementedRegions = $uniqueLocations; meterIds = $uniqueMeterIds }
     }
 }
 $summary | ConvertTo-Json -Depth 100 | Out-File -FilePath $summaryOutputFile

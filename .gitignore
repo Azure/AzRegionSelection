@@ -9,10 +9,13 @@
 *.user
 *.userosscache
 *.sln.docstates
-1-Collect/resources.json
-1-Collect/summary.json
-2-AvailabilityCheck/Availability_*.json
-2-AvailabilityCheck/Azure_*.json
+1-Collect/*.json
+1-Collect/*.csv
+!1-Collect/modules/*.json
+# Ignore all JSON files in 2-AvailabilityCheck
+2-AvailabilityCheck/*.json
+# But do NOT ignore JSON files inside 2-AvailabilityCheck/PropertyMaps
+!2-AvailabilityCheck/propertymaps/*.json
 3-CostInformation/*.json
 3-CostInformation/*.csv
 3-CostInformation/*.xls
