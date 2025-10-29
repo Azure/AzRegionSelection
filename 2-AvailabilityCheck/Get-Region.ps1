@@ -23,7 +23,7 @@
 
 param(
     [Parameter(Mandatory = $true,
-               HelpMessage = "Provide the region name as display name like in the Availability_Mapping.json file (e.g., 'Asia Pacific')")]
+               HelpMessage = "Provide the region name as short name like in the Availability_Mapping.json file (e.g., 'northeurope')")]
     [string]$Region
 )
 

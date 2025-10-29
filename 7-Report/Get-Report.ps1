@@ -163,8 +163,8 @@ If ($costComparisonPath) {
             }
             $retailPrice = $occurrence.RetailPrice
             $priceDiffToOrigin = $occurrence.PriceDiffToOrigin
-            $pricingObj | Add-Member -MemberType NoteProperty -Name "$region-RetailPrice" -Value $retailPrice
-            $pricingObj | Add-Member -MemberType NoteProperty -Name "$region-PriceDiffToOrigin" -Value $priceDiffToOrigin
+            $pricingObj | Add-Member -MemberType NoteProperty -Name "$region-RetailPrice" -Value $retailPrice -Force
+            #$pricingObj | Add-Member -MemberType NoteProperty -Name "$region-PriceDiffToOrigin" -Value $priceDiffToOrigin -Force
         }
         # Create a new object for each unique meter ID
         $costReportItem = [PSCustomObject]@{
