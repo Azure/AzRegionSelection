@@ -21,6 +21,7 @@ env:
 jobs:
   sync-wiki:
     name: Sync docs/wiki to Wiki
+    if: github.repository == 'Azure/AzRegionSelection' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: write
