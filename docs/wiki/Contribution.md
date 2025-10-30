@@ -54,4 +54,4 @@ The below guidelines should be adhered to whilst contributing to this projects c
 
 To make contributions to this repo you must fork and clone the repo. You can follow the guidance here on how to do this [Fork a repo](https://docs.github.com/get-started/quickstart/fork-a-repo)
 
-You **will not** be able to create a branch or push directly to this repo. All changes into this repo **must** be made via a Pull Request. This process is documented here: [Contributing to projects](https://docs.github.com/get-started/quickstart/contributing-to-projects)
+You **will not** be able to create a branch or push directly to this repo. All changes into this repo **must** be made via a Pull Request. This process is documented here: [Contributing to projects](https://docs.github.com/get-started/quickstart/contributing-to-projects).
