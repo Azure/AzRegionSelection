@@ -12,21 +12,36 @@ Before using the toolkit, ensure the following prerequisites are met:
 
 - **Azure PowerShell Modules:** Install the necessary Azure PowerShell modules.
 
-  - Azure Powershell module `Az.ResourceGraph 1.2.0` or later
-  - Azure Powershell module `Az.Accounts 4.1.0` or later
-  - Azure Powershell module `Az.CostManagement 0.4.2` or later
+```powershell
+Install-Module -Name Az.ResourceGraph -MinimumVersion 1.2.0
+Install-Module -Name Az.Accounts -MinimumVersion 4.1.0
+Install-Module -Name Az.CostManagement -MinimumVersion 0.4.2
+````
 
-  If using Azure migrate as input file:
-  - Azure Powershell module `Az.Monitor 5.2.2` or later
-  - Azure Powershell `ImportExcel` module for Azure Migrate script
+If using Azure migrate as input file:
+```powershell
+Install-Module -Name Az.Monitor -MinimumVersion 5.2.2
+```
+ ```powershell
+ Install-Module -Name ImportExcel -Scope CurrentUser
+ ```
+
 
 - **Azure Login:** You must be able to authenticate to Azure. If running locally, use `Connect-AzAccount` to sign in with your Azure credentials.
 
 ## Installation (Getting the Toolkit)
 To obtain the Region Selection Toolkit on your machine or environment:
-1. **Download or Clone** the toolkit’s repository (e.g., via Git): The toolkit is provided as a set of scripts in a GitHub repository (e.g. `Azure/AzRegionSelection`). You can clone it using `git clone https://github.com/Azure/AzRegionSelection.git`, or download the repository ZIP and extract it.
+1. **Download or Clone** the toolkit’s repository: The toolkit is provided as a set of scripts in a GitHub repository (e.g. `Azure/AzRegionSelection`).
+```powershell
+git clone https://github.com/Azure/AzRegionSelection.git
+```
+Or download the repository ZIP and extract it.
 
-2. **Directory Structure:** After retrieval, you should have a directory containing the toolkit scripts. Key sub-folders include `1-Collect`, `2-AvailabilityCheck`, `3-CostInformation`, and `7-Report` (these correspond to different stages of the analysis). It’s important to keep this structure intact. You do **not** need to compile anything – the toolkit is ready to run via PowerShell scripts.
+3. **Directory Structure:** After retrieval, you should have a directory containing the toolkit scripts. These correspond to different stages of the analysis:
+   -  `1-Collect`
+   -  `2-AvailabilityCheck`
+   -  `3-CostInformation`
+   -  `7-Report`
 
 ## Input Data: Providing a Workload Inventory
 The first step in using the toolkit is to provide an inventory of the workload’s Azure resources. The Region Selection Toolkit supports two main input methods for this inventory:
