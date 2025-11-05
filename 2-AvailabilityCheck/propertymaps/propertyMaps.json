@@ -36,8 +36,7 @@
       "TopLevelProperties": {
         "name": "name",
         "tier": "tier",
-        "capacity": "capacity",
-        "family": "family"
+        "capacity": "capacity"
       }
     }
   },

@@ -195,7 +195,6 @@ function Get-rType {
         #"Neither property nor cmdline for $outputVarName for $resourceType is indicated in $filepath"
         Set-Variable -Name $outputVarName -Value "N/A" -Scope Script
     }
-
 }
 
 Function Get-Method {
@@ -327,13 +326,22 @@ $baseResult | ForEach-Object {
     else {
         Get-Method -resourceType $resourceType -flagType "Sku" -object $PSItem
     }
+    $json = Get-Content -Path .\modules\sku.json | ConvertFrom-Json -depth 100
+    $excludeList = $json | Where-Object { $_.resourceType -eq $resourceType -and $_.excludeFromReport -ne $null }
+    if ($excludeList) {
+        foreach ($excludeProp in $excludeList.excludeFromReport) {
+            $sku.PSObject.Properties.Remove($excludeProp)
+        }
+    }
     $str = ""
     foreach ($property in $sku.PSObject.Properties) {
         $str += "$($property.value.ToString())_"
     }
     $str = $str.TrimEnd('_')
     Add-Member -InputObject $sku -MemberType NoteProperty -Name "skuName" -Value $str -Force
-    
+
+
+
     Get-Method -resourceType $resourceType -flagType "resiliencyProperties" -object $PSItem
     Get-Method -resourceType $resourceType -flagType "dataSize" -object $PSItem
     Get-Method -resourceType $resourceType -flagType "ipConfig" -object $PSItem

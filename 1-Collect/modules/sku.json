@@ -10,6 +10,13 @@
     "property": "properties.hardwareProfile",
     "description": "Get sku for a VM",
     "isContainedInOriginalGraphOutput": true
+  },
+  {
+    "resourceType": "microsoft.sql/servers/databases",
+    "property": "sku",
+    "description": "Get sku for a SQL Database",
+    "isContainedInOriginalGraphOutput": true,
+    "excludeFromReport": ["family"]
   }
 ]
 
