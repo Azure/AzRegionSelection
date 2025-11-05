@@ -9,71 +9,80 @@ Once your environment is ready and you have determined the input method, follow 
 
 ### Authenticate and Set Context
 Open a PowerShell prompt in the toolkit’s directory. If you’re in Azure Cloud Shell, you can navigate to the folder where you cloned the toolkit.
-- **Log in to Azure:** Run `Connect-AzAccount` to authenticate to Azure.
+- **Log in to Azure:** Run the following to authenticate to Azure
+```powershell
+Connect-AzAccount
+```
 
 ## Run 1-Collect (Inventory Collection)
 
-Navigate to the `1-Collect` folder and run the script `Get-AzureServices.ps1` to collect the Azure resource inventory and properties, for yor relevant scope (resource group, subscription or multiple subscriptions). The script will generate a  `resources.json` and a `summary.json` file in the same directory. The `resources.json` file contains the full inventory of resources and their properties, while the `summary.json` file contains a summary of the resources collected. For examples on how to run the script for different scopes please see [1-Collect Examples](https://github.com/Azure/AzRegionSelection/wiki/1-Collect).
-
-**If using Azure Resource Graph:** 
+Navigate to the `1-Collect` folder and run the script `Get-AzureServices.ps1` to collect the Azure resource inventory and properties, for yor relevant scope (resource group, subscription or multiple subscriptions).
 
 ```powershell
-Get-AzureServices.ps1 -includeCost $true
+.\Get-AzureServices.ps1 -includeCost $true
 ```
 
 **If using an Azure Migrate export:** Run `Get-RessourcesFromAM.ps1` against an Azure Migrate `Assessment.xlsx` file to convert the VM & Disk SKUs into the same output as `Get-AzureServices.ps1` For example:
 
 ```powershell
-Get-RessourcesFromAM.ps1 -filePath "C:\path\to\Assessment.xlsx" -outputFile "C:\path\to\summary.json"
+.\Get-RessourcesFromAM.ps1 -filePath "C:\path\to\Assessment.xlsx" -outputFile "C:\path\to\summary.json"
 ```
+
+The script will generate a  `resources.json` and a `summary.json` file in the same directory. The `resources.json` file contains the full inventory of resources and their properties, while the `summary.json` file contains a summary of the resources collected. For examples on how to run the script for different scopes please see [1-Collect Examples](https://github.com/Azure/AzRegionSelection/wiki/1-Collect).
+
 > [!NOTE]
 > Before proceeding, make sure that the output files (`resources.json`, `summary.json` and a `CSV file`) are generated in the `1-Collect` folder.
 
 ## Run 2-AvailabilityCheck (Service Availability)
 
-This script will check the availability of the services in the target region based on the inventory collected in the previous step. Note that this functionality is not yet complete and is a work in progress. For examples on how to run the script please see [2-AvailabilityCheck Examples](https://github.com/Azure/AzRegionSelection/wiki/2-AvailabilityCheck)
+This script will check the availability of the services in the target region based on the inventory collected in the previous step.
 
-Navigate to the `2-AvailabilityCheck` folder and run  `Get-AvailabilityInformation.ps1`. It will generate a number of json files in the same directory the important one is the `Availability_Mapping.json` Run the following script: 
+Navigate to the `2-AvailabilityCheck` folder and run  `Get-AvailabilityInformation.ps1`. It will generate an `Availability_Mapping.json` Run the following script: 
 
 ```powershell
-Get-AvailabilityInformation.ps1
+.\Get-AvailabilityInformation.ps1 
 ```
 
 Check the availability of the resources in scope for a specific region. This will generate a file named `Availability_Mapping_<Region>.json` in the same directory. Run the following script:
 
 ```powershell
-Get-Region.ps1 -Region <Target-region>
+.\Get-Region.ps1 -Region <Target-region>
 ```
+
+Note that this functionality is not yet complete and is a work in progress. For more alternatives on how to run the script please see [2-AvailabilityCheck Examples](https://github.com/Azure/AzRegionSelection/wiki/2-AvailabilityCheck)
 
 ## Run 3-CostInformation (Cost Analysis)
 
-The Azure public pricing API is used, meaning that, prices are **not** customer-specific, but are only used to calculate the relative cost difference between regions for each meter ID. Please see [3-CostInformation](https://github.com/Azure/AzRegionSelection/wiki/3-CostInformation) for more details.
+The Azure public pricing API is used, meaning that, prices are **not** customer-specific, but are only used to calculate the relative cost difference between regions for each meter ID.
 
 Navigate to the `3-CostInformation` folder and run the script using the `Perform-RegionComparison.ps1` script to do cost comparison with target Region(s). 
 
-For example:
 ```powershell
-$regions = @("eastus", "brazilsouth", "australiaeast")
-.\Perform-RegionComparison.ps1 -regions $regions -outputFormat json -reso
+$regions = @("Target-region")
 ```
 
-This will generate `region_comparison_RegionComparison.json` file
+```powershell
+.\Perform-RegionComparison.ps1 -regions $regions -outputFormat json -resourceFile ..\1-Collect\resources.json 
+```
+
+This will generate `region_comparison_prices.json` file
+
+Please see [3-CostInformation](https://github.com/Azure/AzRegionSelection/wiki/3-CostInformation) for more details.
 
 ## Run 7-Report
 
-This script generates formatted Excel (`.xlsx`) reports based on the output from the previous check script. Please see [7-Report](https://github.com/Azure/AzRegionSelection/wiki/7-Report) for more details.
+This script generates formatted Excel (`.xlsx`) reports based on the output from the previous check script.
 
-
-Navigate to the `7-Report` folder and run the `Get-Report.ps1`, also specify the path to the availability information and the cost comparision path. For example:
+Navigate to the `7-Report` folder and run the `Get-Report.ps1`, also specify the path to the availability information and the cost comparision path.
 
 ```powershell
-.\Get-Report.ps1 -availabilityInfoPath ..\2-AvailabilityCheck\Availability_Mapping_<Region>.json -costComparisonPath ..\3-CostInformation\region_comparison_RegionComparison.json
+.\Get-Report.ps1 -availabilityInfoPath ..\2-AvailabilityCheck\Availability_Mapping_<Target-region>.json -costComparisonPath ..\3-CostInformation\region_comparison_prices.json
 ```
 The script generates an `.xlsx` file in the `7-report` folder, named `Availability_Report_CURRENTTIMESTAMP`.
 
-Open the generated Excel file. The reports provide detailed information for each service. These reports help you analyze service compatibility and cost differences across different regions.
+Open the generated Excel file. The reports provide detailed information for each service. These reports help you analyze service availability and cost differences across different regions.
 
-
+Please see [7-Report](https://github.com/Azure/AzRegionSelection/wiki/7-Report) for more details.
 
 
 
