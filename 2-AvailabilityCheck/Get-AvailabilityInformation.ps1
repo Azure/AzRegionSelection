@@ -152,21 +152,40 @@ Function Get-ResourceTypeParameters {
     }
 }
 
+function Compare-ObjectsStrict {
+    param(
+        [psobject]$Object1,
+        [psobject]$Object2
+    )
+    write-verbose "Entering Compare-ObjectsStrict"
+    $norm1 = ($Object1.PSObject.Properties |
+        Sort-Object Name |
+        ForEach-Object { "$($_.Name)=$($_.Value)" }) -join ';'
+
+    $norm2 = ($Object2.PSObject.Properties |
+        Sort-Object Name |
+        ForEach-Object { "$($_.Name)=$($_.Value)" }) -join ';'
+
+    Write-Verbose "Comparing objects:"
+    Write-Verbose "  Object1: $norm1"
+    Write-Verbose "  Object2: $norm2"
+    Write-Verbose "  Match: $($norm1 -eq $norm2)"
+
+    return $norm1 -eq $norm2
+}
+
+
 Function Get-Property {
     param(
         [Parameter(Mandatory)][pscustomobject]$object,
         [Parameter(Mandatory)][pscustomobject]$PropertyNames,
         [Parameter(Mandatory)][pscustomobject]$outputObject
     )
-    $skuName = $outputObject.skuName
     foreach ($key in $PropertyNames.PSObject.Properties.Name) {
         $sourceProp = $PropertyNames.$key
         $value = $object.$sourceProp
-        $skuName += "_$value"
         $outputObject[$key] = $value
     }
-    $skuName = $skuName.TrimStart('_')
-    $outputObject.skuName = $skuName
     return $outputObject
 }
 
@@ -184,15 +203,17 @@ Function Expand-NestedCollection {
         }
         foreach ($o in $parentObj) {
             If (!$Schema.ChildProperties -and $Schema.TopLevelProperties.Count -ge 1) {
-                $props = @{"skuName" = "" }
+                $props = @{}
                 $props = get-Property -object $o -PropertyNames $Schema.TopLevelProperties -outputObject $props
-                # trim leading underscore from skuName
                 $lSkus += $props
             }
             elseif ($Schema.ChildProperties -and $Schema.TopLevelProperties.Count -ge 1) {
-                $props = @{"skuName" = "" }
+                $props = @{}
                 $props = get-Property -object $o -PropertyNames $Schema.TopLevelProperties -outputObject $props
-                $children = $o.$($Schema.ChildProperties.name)
+                $children = $parentObj
+                for ($i = 0; $i -lt $Schema.ChildProperties.name.Count; $i++) {
+                    $children = $children.$($Schema.ChildProperties.name[$i])
+                }
                 foreach ($child in $children) {
                     $childProps = $props.Clone()
                     $childProps = get-Property -object $child -PropertyNames $Schema.ChildProperties.props -outputObject $childProps
@@ -224,6 +245,7 @@ Function Get-ResourceType {
                 $baseObject = New-Object psobject
                 Add-Member -InputObject $baseObject -MemberType NoteProperty -Name "regionCode" -Value $region
                 $uri = $uri01 -f $subscriptionId, $region
+        
                 "Invoke-AzRestMethod -Uri $uri -Method Get"
                 $Response = (Invoke-AzRestMethod -Uri $uri -Method Get).Content | ConvertFrom-Json -depth 100
                 If ($response.error.code -ne 'NoRegisteredProviderFound') {
@@ -346,14 +368,14 @@ function Update-SKUProperties {
         [Parameter(Mandatory)] [string]$RegionName,
         [Parameter(Mandatory)] [pscustomobject]$Object,
         [Parameter(Mandatory)] [string]$availabilityStatus,
-        [Parameter(Mandatory)] [string]$skuName
+        [Parameter(Mandatory)] [PSCustomObject]$sku
     )
     $region = $Object.AllRegions | Where-Object { $_.region -eq $RegionName }
     Write-Host "Updating SKUs in region '$RegionName'..."
-    foreach ($sku in $region.SKUs) {
-        if ($sku.skuName -eq $skuName ) {
-            Write-Host "Setting availability of '$skuName' to '$availabilityStatus' in region '$RegionName'"
-            Add-Member -InputObject $sku -MemberType NoteProperty -Name "available" -Value $availabilityStatus -Force
+    foreach ($targetSku in $region.SKUs) {
+        if (Compare-ObjectsStrict -Object1 $sku -Object2 $targetSku) {
+            Write-Host "Setting availability of '$($targetSku.Name)' to '$availabilityStatus' in region '$RegionName'"
+            Add-Member -InputObject $targetSku -MemberType NoteProperty -Name "available" -Value $availabilityStatus -Force
         }
     }
 }
@@ -381,18 +403,17 @@ Foreach ($cResource in $overAllObj) {
     $availScope = $availabilityMapping | Where-Object { $psitem.ResourceType -eq $cResource.ResourceType }
     $cResource.ResourceType
     Foreach ($sku in $availScope.ImplementedSkus) {
-        $skuName = $sku.skuName
         Foreach ($region in $cResource.Availability) { 
             $regionCode = $region.RegionCode; 
             If ($region.skus.count -ne 0) {
-                $skuFound = $region.skus | where-object { $Psitem.skuName -eq $skuName }
+                $skuFound = $region.skus | Where-Object { Compare-ObjectsStrict -Object1 ([PSCustomObject]$PSItem) -Object2 $sku -verbose }
                 If ($skuFound -ne $null) { 
-                    "SUCCESS: SKU $skuName found in region $regionCode";
-                    Update-SKUProperties -RegionName $regionCode -Object $availScope -availabilityStatus true -skuName $skuName
+                    "SUCCESS: SKU $sku found in region $regionCode";
+                    Update-SKUProperties -RegionName $regionCode -Object $availScope -availabilityStatus true -sku $sku
                 } 
                 else { 
-                    "SKU $skuName not found in region $regionCode"; 
-                    Update-SKUProperties -RegionName $regionCode -Object $availScope -availabilityStatus false -skuName $skuName
+                    "SKU $sku not found in region $regionCode"; 
+                    Update-SKUProperties -RegionName $regionCode -Object $availScope -availabilityStatus false -sku $sku
                 }
             }
             else {
