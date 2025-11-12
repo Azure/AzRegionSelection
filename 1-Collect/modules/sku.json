@@ -17,6 +17,13 @@
     "description": "Get sku for a SQL Database",
     "isContainedInOriginalGraphOutput": true,
     "excludeFromReport": ["family"]
+  },
+  {
+    "resourceType": "microsoft.apimanagement/service",
+    "property": "sku",
+    "description": "Get sku for an API Management Service",
+    "isContainedInOriginalGraphOutput": true,
+    "excludeFromReport": ["capacity"]
   }
 ]
 
