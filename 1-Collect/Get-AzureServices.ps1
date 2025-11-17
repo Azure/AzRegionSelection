@@ -326,6 +326,13 @@ $baseResult | ForEach-Object {
     else {
         Get-Method -resourceType $resourceType -flagType "Sku" -object $PSItem
     }
+    # if $sku is a single string and is not N/A then turn it into an object with name and the current sku value
+    if ($sku -is [string] -and $sku -ne "N/A") {
+        $tempSku = [PSCustomObject]@{
+            name = $sku
+        }
+        $sku = $tempSku
+    }
     $json = Get-Content -Path .\modules\sku.json | ConvertFrom-Json -depth 100
     $excludeList = $json | Where-Object { $_.resourceType -eq $resourceType -and $_.excludeFromReport -ne $null }
     if ($excludeList) {
@@ -333,15 +340,6 @@ $baseResult | ForEach-Object {
             $sku.PSObject.Properties.Remove($excludeProp)
         }
     }
-    $str = ""
-    foreach ($property in $sku.PSObject.Properties) {
-        $str += "$($property.value.ToString())_"
-    }
-    $str = $str.TrimEnd('_')
-    Add-Member -InputObject $sku -MemberType NoteProperty -Name "skuName" -Value $str -Force
-
-
-
     Get-Method -resourceType $resourceType -flagType "resiliencyProperties" -object $PSItem
     Get-Method -resourceType $resourceType -flagType "dataSize" -object $PSItem
     Get-Method -resourceType $resourceType -flagType "ipConfig" -object $PSItem

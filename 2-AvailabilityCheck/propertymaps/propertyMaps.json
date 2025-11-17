@@ -6,7 +6,7 @@
     "properties": {
       "startPath": [],
       "TopLevelProperties": {
-        "name": "name"
+        "vmSize": "name"
       }
     }
   },
@@ -55,6 +55,63 @@
           "family": "name",
           "sku": "sku"
         }
+      }
+    }
+  },
+  {
+    "resourceType": "microsoft.apimanagement/service",
+    "uri": "https://management.azure.com/subscriptions/{0}/providers/Microsoft.ApiManagement/skus?api-version=2024-05-01",
+    "regionalApi": false,
+    "properties": {
+      "startPath": [],
+      "TopLevelProperties": {
+        "name": "name"
+      }
+    }
+  },
+  {
+    "resourceType": "microsoft.dbformysql/flexibleservers",
+    "uri": "https://management.azure.com/subscriptions/{0}/providers/Microsoft.DBforMySQL/locations/{1}/capabilities?api-version=2025-06-01-preview",
+    "regionalApi": true,
+    "properties": {
+      "startPath": ["supportedFlexibleServerEditions"],
+      "TopLevelProperties": {
+        "tier": "name"
+      },
+      "ChildProperties": {
+        "name": ["supportedServerVersions", "supportedSkus"],
+        "props": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "resourceType": "microsoft.dbforpostgresql/flexibleservers",
+    "uri": "https://management.azure.com/subscriptions/{0}/providers/Microsoft.DBforPostgreSQL/locations/{1}/capabilities?api-version=2025-08-01",
+    "regionalApi": true,
+    "properties": {
+      "startPath": ["supportedservereditions"],
+      "TopLevelProperties": {
+        "tier": "name"
+      },
+      "ChildProperties": {
+        "name": ["supportedServerSkus"],
+        "props": {
+          "name": "name"
+        }
+      }
+    }
+  },
+  {
+    "resourceType": "microsoft.elasticsan/elasticsans",
+    "uri": "https://management.azure.com/subscriptions/{0}/providers/Microsoft.ElasticSan/skus?api-version=2025-09-01",
+    "regionalApi": false,
+    "properties": {
+      "startPath": [],
+      "TopLevelProperties": {
+        "name": "name",
+        "tier": "tier"
       }
     }
   }
