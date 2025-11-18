@@ -37,10 +37,17 @@ jobs:
         $config.Run.PassThru = $true
         
         Invoke-Pester -Configuration $config
-    
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action/windows@v2
+
+    - name: Upload Test Results
       if: always()
+      uses: actions/upload-artifact@v3
       with:
-        files: './TestResults.xml'
-        check_name: 'Pester Test Results'
+        name: test-results
+        path: './TestResults.xml'
+    
+    # - name: Publish Test Results
+    #   uses: EnricoMi/publish-unit-test-result-action/windows@v2
+    #   if: always()
+    #   with:
+    #     files: './TestResults.xml'
+    #     check_name: 'Pester Test Results'
