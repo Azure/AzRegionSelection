@@ -22,7 +22,7 @@ Function Set-ColumnColor {
         [Parameter(Mandatory = $true)] [object]$startColumn,
         [Parameter(Mandatory = $true)] [string[]]$cellValGreen,
         [Parameter(Mandatory = $true)] [string[]]$cellValRed,
-       [Parameter(Mandatory = $false)] [string[]]$cellValYellow
+        [Parameter(Mandatory = $false)] [string[]]$cellValYellow
     )
     $colCount = $ws.Dimension.End.Column
     for ($col = $startColumn; $col -le $colCount; $col++) {
@@ -102,23 +102,23 @@ Function Set-SvcAvailReportObj {
         [string]$skuAvailability,
         [string]$serviceAvailability
     )
-    if($skuAvailability -eq "true") {
+    if ($skuAvailability -eq "true") {
         $skuAvailability = "Available"
-        }
-    elseif($skuAvailability -eq "false") {
+    }
+    elseif ($skuAvailability -eq "false") {
         $skuAvailability = "Not available"
     }
-    elseif($skuAvailability -eq "") {
+    elseif ($skuAvailability -eq "") {
         $skuAvailability = "NotCoveredByScript"
     }
     
     $reportItem = [PSCustomObject]@{
-        ResourceType                         = $resourceType
-        ResourceCount                        = $resourceCount
-        ImplementedRegions                   = ($implementedRegions -join ", ")
-        sku                                  = $sku
-        "SKU available"                      = $skuAvailability
-        "Service available"                  = $serviceAvailability
+        ResourceType        = $resourceType
+        ResourceCount       = $resourceCount
+        ImplementedRegions  = ($implementedRegions -join ", ")
+        sku                 = $sku
+        "SKU available"     = $skuAvailability
+        "Service available" = $serviceAvailability
     }
     return $reportItem
 }
@@ -140,11 +140,22 @@ If ($availabilityInfoPath) {
             If ($item.SelectedRegion.available -eq "true") {
                 $regionAvailability = "Available"
             }
+
             # if implementedSkus is exists and is not null
             if ($item.ImplementedSkus -and $item.ImplementedSkus[0] -ne "N/A") {
-                ForEach ($sku in $item.SelectedRegion.SKUs) {
-                    $reportItem = Set-SvcAvailReportObj -resourceType $resourceType -resourceCount $itemCount -implementedRegions $item.ImplementedRegions -sku $sku.skuname -skuAvailability $sku.available -serviceAvailability $regionAvailability
-                    $reportData += $reportItem
+                if ( $regionAvailability -eq "Available") {
+                    ForEach ($sku in $item.SelectedRegion.SKUs) {
+                        $skuName = ($sku.PSObject.Properties | Where-Object { $_.Name -ne 'available' } | ForEach-Object { $_.Value }) -join "_"
+                        $reportItem = Set-SvcAvailReportObj -resourceType $resourceType -resourceCount $itemCount -implementedRegions $item.ImplementedRegions -sku $skuName -skuAvailability $sku.available -serviceAvailability $regionAvailability
+                        $reportData += $reportItem
+                    }
+                }
+                else {
+                    ForEach ($sku in $item.ImplementedSkus) {
+                        $skuName = ($sku.PSObject.Properties | Where-Object { $_.Name -ne 'available' } | ForEach-Object { $_.Value }) -join "_"
+                        $reportItem = Set-SvcAvailReportObj -resourceType $resourceType -resourceCount $itemCount -implementedRegions $item.ImplementedRegions -sku $skuName -skuAvailability "false" -serviceAvailability $regionAvailability
+                        $reportData += $reportItem
+                    }
                 }
             }
             else {

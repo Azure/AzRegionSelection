@@ -1,0 +1,53 @@
+name: Run Pester Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install Required Modules
+      shell: pwsh
+      run: |
+        Install-Module -Name Pester -Force -Scope CurrentUser -MinimumVersion 5.0
+        Install-Module -Name ImportExcel -Force -Scope CurrentUser
+    
+    - name: Run Pester Tests
+      shell: pwsh
+      run: |
+        $config = New-PesterConfiguration
+        $config.Run.Path = @(
+          '.\1-Collect\*.Tests.ps1',
+          '.\2-AvailabilityCheck\*.Tests.ps1',
+          '.\3-CostInformation\*.Tests.ps1',
+          '.\7-Report\*.Tests.ps1'
+        )
+        $config.Output.Verbosity = 'Detailed'
+        $config.TestResult.Enabled = $true
+        $config.TestResult.OutputFormat = 'NUnitXml'
+        $config.TestResult.OutputPath = './TestResults.xml'
+        $config.Run.Exit = $true
+        $config.Run.PassThru = $true
+        
+        Invoke-Pester -Configuration $config
+
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: './TestResults.xml'
+    
+    # - name: Publish Test Results
+    #   uses: EnricoMi/publish-unit-test-result-action/windows@v2
+    #   if: always()
+    #   with:
+    #     files: './TestResults.xml'
+    #     check_name: 'Pester Test Results'
