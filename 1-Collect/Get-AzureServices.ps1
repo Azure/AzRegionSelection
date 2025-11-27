@@ -392,10 +392,10 @@ foreach ($group in $groupedResources) {
             $newSku["count"] = $skuGroup.Count
             [PSCustomObject]$newSku
         }
-        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = $implementedSkus; ImplementedRegions = $uniqueLocations; MeterIds = $uniqueMeterIds }
+        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = $implementedSkus; ImplementedRegions = $uniqueLocations; meterIds = $uniqueMeterIds }
     }
     else {
-        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = @("N/A"); ImplementedRegions = $uniqueLocations; MeterIds = $uniqueMeterIds }
+        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = @("N/A"); ImplementedRegions = $uniqueLocations; meterIds = $uniqueMeterIds }
     }
 }
 $summary | ConvertTo-Json -Depth 100 | Out-File -FilePath $summaryOutputFile
