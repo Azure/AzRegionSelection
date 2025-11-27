@@ -98,6 +98,7 @@ Function Set-SvcAvailReportObj {
         [string]$resourceType,
         [int]$resourceCount,
         [array]$implementedRegions,
+        [string]$skuCount,
         [string]$sku,
         [string]$skuAvailability,
         [string]$serviceAvailability
@@ -116,6 +117,7 @@ Function Set-SvcAvailReportObj {
         ResourceType        = $resourceType
         ResourceCount       = $resourceCount
         ImplementedRegions  = ($implementedRegions -join ", ")
+        SKUCount            = $skuCount
         sku                 = $sku
         "SKU available"     = $skuAvailability
         "Service available" = $serviceAvailability
@@ -145,21 +147,23 @@ If ($availabilityInfoPath) {
             if ($item.ImplementedSkus -and $item.ImplementedSkus[0] -ne "N/A") {
                 if ( $regionAvailability -eq "Available") {
                     ForEach ($sku in $item.SelectedRegion.SKUs) {
-                        $skuName = ($sku.PSObject.Properties | Where-Object { $_.Name -ne 'available' } | ForEach-Object { $_.Value }) -join "_"
-                        $reportItem = Set-SvcAvailReportObj -resourceType $resourceType -resourceCount $itemCount -implementedRegions $item.ImplementedRegions -sku $skuName -skuAvailability $sku.available -serviceAvailability $regionAvailability
+                        $skuName = ($sku.PSObject.Properties | Where-Object { $_.Name -ne 'available'-and $_.Name -ne 'count' } | ForEach-Object { $_.Value }) -join "_"
+                        $skuCount = $sku.count
+                        $reportItem = Set-SvcAvailReportObj -resourceType $resourceType -resourceCount $itemCount -implementedRegions $item.ImplementedRegions -skuCount $skuCount -sku $skuName -skuAvailability $sku.available -serviceAvailability $regionAvailability
                         $reportData += $reportItem
                     }
                 }
                 else {
                     ForEach ($sku in $item.ImplementedSkus) {
                         $skuName = ($sku.PSObject.Properties | Where-Object { $_.Name -ne 'available' } | ForEach-Object { $_.Value }) -join "_"
-                        $reportItem = Set-SvcAvailReportObj -resourceType $resourceType -resourceCount $itemCount -implementedRegions $item.ImplementedRegions -sku $skuName -skuAvailability "false" -serviceAvailability $regionAvailability
+                        $skuCount = $sku.count
+                        $reportItem = Set-SvcAvailReportObj -resourceType $resourceType -resourceCount $itemCount -implementedRegions $item.ImplementedRegions -skuCount $skuCount -sku $skuName -skuAvailability "false" -serviceAvailability $regionAvailability
                         $reportData += $reportItem
                     }
                 }
             }
             else {
-                $reportItem = Set-SvcAvailReportObj -resourceType $resourceType -resourceCount $itemCount -implementedRegions $item.ImplementedRegions -sku "N/A" -skuAvailability "N/A" -serviceAvailability $regionAvailability
+                $reportItem = Set-SvcAvailReportObj -resourceType $resourceType -resourceCount $itemCount -implementedRegions $item.ImplementedRegions -skuCount "N/A" -sku "N/A" -skuAvailability "N/A" -serviceAvailability $regionAvailability
                 $reportData += $reportItem
             }
         }

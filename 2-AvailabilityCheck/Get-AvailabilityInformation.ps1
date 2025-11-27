@@ -155,22 +155,21 @@ Function Get-ResourceTypeParameters {
 function Compare-ObjectsStrict {
     param(
         [psobject]$Object1,
-        [psobject]$Object2
+        [psobject]$Object2,
+        [string[]]$ExcludeProperty = @("count")
     )
-    write-verbose "Entering Compare-ObjectsStrict"
-    $norm1 = ($Object1.PSObject.Properties |
+    Write-Verbose "Entering Compare-ObjectsStrict"
+    # Filter out excluded properties
+    $props1 = $Object1.PSObject.Properties | Where-Object { $ExcludeProperty -notcontains $_.Name }
+    $props2 = $Object2.PSObject.Properties | Where-Object { $ExcludeProperty -notcontains $_.Name }
+    $norm1 = ($props1 | Sort-Object Name | ForEach-Object { "$($_.Name)=$($_.Value)" }) -join ';'
+    $norm2 = ($props2 |
         Sort-Object Name |
         ForEach-Object { "$($_.Name)=$($_.Value)" }) -join ';'
-
-    $norm2 = ($Object2.PSObject.Properties |
-        Sort-Object Name |
-        ForEach-Object { "$($_.Name)=$($_.Value)" }) -join ';'
-
     Write-Verbose "Comparing objects:"
-    Write-Verbose "  Object1: $norm1"
-    Write-Verbose "  Object2: $norm2"
+    Write-Verbose "  Object1 (norm): $norm1"
+    Write-Verbose "  Object2 (norm): $norm2"
     Write-Verbose "  Match: $($norm1 -eq $norm2)"
-
     return $norm1 -eq $norm2
 }
 

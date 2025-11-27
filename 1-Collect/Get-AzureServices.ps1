@@ -377,16 +377,25 @@ foreach ($group in $groupedResources) {
     if ($uniqueLocations -isnot [System.Array]) {
         $uniqueLocations = @($uniqueLocations)
     }
-    If ($group.Group.ResourceSku -ne 'N/A') {
-
-        $uniqueSkus = $group.Group.ResourceSku | Select-Object * -Unique
-        if ( $uniqueSkus -isnot [System.Array]) {
-            $uniqueSkus = @($uniqueSkus)
+    if ($group.Group.ResourceSku -ne 'N/A') {
+        $skuCounts = $group.Group |
+            Where-Object { $_.ResourceSku -is [object] } |
+            Group-Object -Property {
+                $_.ResourceSku | ConvertTo-Json -Compress
+            }
+        $implementedSkus = foreach ($skuGroup in $skuCounts) {
+            $skuObj = $skuGroup.Group[0].ResourceSku
+            $newSku = [ordered]@{}
+            foreach ($prop in $skuObj.PSObject.Properties) {
+                $newSku[$prop.Name] = $prop.Value
+            }
+            $newSku["count"] = $skuGroup.Count
+            [PSCustomObject]$newSku
         }
-        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = $uniqueSkus; ImplementedRegions = $uniqueLocations; meterIds = $uniqueMeterIds }
+        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = $implementedSkus; ImplementedRegions = $uniqueLocations; MeterIds = $uniqueMeterIds }
     }
-    Else {
-        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = @("N/A"); ImplementedRegions = $uniqueLocations; meterIds = $uniqueMeterIds }
+    else {
+        $summary += [PSCustomObject]@{ResourceCount = $group.Count; ResourceType = $resourceType; ImplementedSkus = @("N/A"); ImplementedRegions = $uniqueLocations; MeterIds = $uniqueMeterIds }
     }
 }
 $summary | ConvertTo-Json -Depth 100 | Out-File -FilePath $summaryOutputFile
