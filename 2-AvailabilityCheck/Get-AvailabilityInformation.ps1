@@ -24,6 +24,9 @@
 .NOTES
     - Requires Azure PowerShell module to be installed and authenticated.
 #>
+param(
+    [Parameter(Mandatory = $false)][string]$SummaryFilePath = "$(Get-Location)\..\1-Collect\summary.json"
+)
 
 function Out-JSONFile {
     param (
@@ -295,14 +298,13 @@ Function Get-ResourceType {
 }
 
 function Import-CurrentEnvironment {
-    $SummaryFilePath = "$(Get-Location)\..\1-Collect\summary.json"
     # Check if the summary file exists and load it
     if (Test-Path $SummaryFilePath) {
-        Write-Output "  Loading summary file: ../1-Collect/summary.json" | Out-Host
+        Write-Output "  Loading summary file: $SummaryFilePath" | Out-Host
         $CurrentEnvironment = Get-Content -Path $SummaryFilePath -raw | ConvertFrom-Json -depth 10
     }
     else {
-        Write-Output "File 'summary.json' not found in '../1-Collect/summary.json'."
+        Write-Output "File '$SummaryFilePath' not found."
         exit 1
     }
     # Check for empty SKUs and remove 'ResourceSkus' property if its value is 'N/A' in the current implementation data
