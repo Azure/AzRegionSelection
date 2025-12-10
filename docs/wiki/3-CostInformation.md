@@ -77,7 +77,7 @@ Instructions for use:
 2. Ensure the `resources.json` file is present (from the running of the collector script).
 2. Run the script using `.\Perform-RegionComparison.ps1`. The script will generate output files in the current folder.
 
-#### Example
+### Multiple Regions Example
 
 ```powershell
 $regions = @("eastus", "brazilsouth", "australiaeast")
