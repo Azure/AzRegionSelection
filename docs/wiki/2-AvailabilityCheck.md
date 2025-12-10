@@ -26,12 +26,19 @@ Get-Region.ps1 -Region <Target-region>
 ```
 This will generate `Availability_Mapping_<Region>.json` in the same directory. 
 
+## Multiple Regions
+To generate a report for multiple regions, you need to create one Availability_Mapping_<Region>.json file per region.
+Run the following command for each region:
+```powershell
+Get-Region.ps1 -Region <Target-region>
+```
+
 ## Example:
 ```powershell
 Get-AvailabilityInformation.ps1
 # Wait for the script to complete, this may take a while.
 Get-Region.ps1 -region <target-region1>
-# Example1: Get-Region.ps1 -region "east us"
-# Example2: Get-Region.ps1 -region "west us"
-# Example3: Get-Region.ps1 -region "sweden central"
+# Example1: Get-Region.ps1 -region east us
+# Example2: Get-Region.ps1 -region west us
+# Example3: Get-Region.ps1 -region sweden central
 ```
