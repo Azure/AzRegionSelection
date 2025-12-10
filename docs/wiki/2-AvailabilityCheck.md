@@ -37,7 +37,7 @@ Get-Region.ps1 -Region <Target-region>
 ```powershell
 Get-AvailabilityInformation.ps1
 # Wait for the script to complete, this may take a while.
-Get-Region.ps1 -region <target-region1>
+Get-Region.ps1 -region <target-region>
 # Example1: Get-Region.ps1 -region east us
 # Example2: Get-Region.ps1 -region west us
 # Example3: Get-Region.ps1 -region sweden central
