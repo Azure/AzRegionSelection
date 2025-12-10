@@ -13,7 +13,7 @@ Note that this functionality is not yet complete and is a work in progress. Curr
 The `Get-AvailabilityInformation.ps1` script only needs to be run once to collect the availability information for all regions, which takes a little while. Run the following script: 
 
 ```powershell
-Get-AvailabilityInformation.ps1
+.\Get-AvailabilityInformation.ps1
 ```
 It will generate a number of json files in the same directory the important one is the `Availability_Mapping.json`
 
@@ -22,7 +22,7 @@ It will generate a number of json files in the same directory the important one 
 To check the availability of the resources in scope in a specific region run following script:
 
 ```powershell
-Get-Region.ps1 -Region <Target-region>
+.\Get-Region.ps1 -Region <Target-region>
 ```
 This will generate `Availability_Mapping_<Region>.json` in the same directory. 
 
@@ -30,12 +30,12 @@ This will generate `Availability_Mapping_<Region>.json` in the same directory.
 To generate a report for multiple regions, you need to create one Availability_Mapping_<Region>.json file per region.
 Run the following command for each region:
 ```powershell
-Get-Region.ps1 -Region <Target-region>
+.\Get-Region.ps1 -Region <Target-region>
 ```
 
 ## Example:
 ```powershell
-Get-AvailabilityInformation.ps1
+.\Get-AvailabilityInformation.ps1
 # Wait for the script to complete, this may take a while.
 Get-Region.ps1 -region <target-region>
 # Example1: Get-Region.ps1 -region east us
