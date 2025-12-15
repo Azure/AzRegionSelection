@@ -27,7 +27,7 @@ To check the availability of the resources in scope in a specific region run fol
 This will generate `Availability_Mapping_<Region>.json` in the same directory. 
 
 ## Multiple Regions
-To generate a report for multiple regions, you need to create one Availability_Mapping_<Region>.json file per region.
+To generate a report for multiple regions, you need to create one `Availability_Mapping_<Region>.json` file per region.
 Run the following command for each region:
 ```powershell
 .\Get-Region.ps1 -Region <Target-region>
