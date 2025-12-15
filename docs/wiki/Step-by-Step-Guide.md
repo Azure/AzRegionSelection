@@ -66,7 +66,7 @@ $regions = @("Target-region")
 ```
 
 ```powershell
-.\Perform-RegionComparison.ps1 -regions $regions -outputFormat json -resourceFile ..\1-Collect\resources.json 
+.\Perform-RegionComparison.ps1 -regions $regions -outputFormat json -resourceFile ..\1-Collect\resources.json
 ```
 
 This will generate `region_comparison_prices.json` file

@@ -8,25 +8,25 @@ Run the `Get-AzureServices.ps1` script with your target scope. For example:
 - To include Cost Information add parameter `-includeCost $true`. If you include this parameter, it will also generate a CSV file in the same directory. This CSV file can be used later in `3-CostInformation`. Note: This might take some time depending on how long it takes to download the cost information.
 
 ```powershell
-Get-AzureServices.ps1 -includeCost $true
+.\Get-AzureServices.ps1 -includeCost $true
 ```
 
 - To collect the inventory for a single resource group, cost not included, run the script as follows:
 
 ```powershell
-Get-AzureServices.ps1 -scopeType resourceGroup -resourceGroupName <resource-group-name> -subscriptionId <subscription-id>
+.\Get-AzureServices.ps1 -scopeType resourceGroup -resourceGroupName <resource-group-name> -subscriptionId <subscription-id>
 ```
 
 - To collect the inventory for a single subscription, cost not included, run the script as follows:
 
 ```powershell
-Get-AzureServices.ps1 -scopeType subscription -subscriptionId <subscription-id>
+.\Get-AzureServices.ps1 -scopeType subscription -subscriptionId <subscription-id>
 ```
 
-- To collect the inventory for multiple subscriptions, you will need to create a json file containing the subscription ids in scope. See [here](https://github.com/Azure/AzRegionSelection/wiki/media/subscriptions.json) for a sample json file. Once the file is created, run the script as follows:
+- To collect the inventory for multiple subscriptions, you will need to create a `subscriptions.json` file containing the subscription ids in scope. See [here](https://github.com/Azure/AzRegionSelection/wiki/media/subscriptions.json) for a sample json file. Once the file is created, run the script as follows:
 
 ```powershell
-Get-AzureServices.ps1 -multiSubscription -workloadFile <path-to-workload-file>
+.\Get-AzureServices.ps1 -scopeType multiSubscription -workloadFile subscriptions.json -includeCost $true
 ```
 
 ### If using an Azure Migrate export:
