@@ -23,7 +23,7 @@ Run the `Get-AzureServices.ps1` script with your target scope. For example:
 .\Get-AzureServices.ps1 -scopeType subscription -subscriptionId <subscription-id>
 ```
 
-- To collect the inventory for multiple subscriptions, you will need to create a subscriptions.json file containing the subscription ids in scope. See [here](https://github.com/Azure/AzRegionSelection/wiki/media/subscriptions.json) for a sample json file. Once the file is created, run the script as follows:
+- To collect the inventory for multiple subscriptions, you will need to create a `subscriptions.json` file containing the subscription ids in scope. See [here](https://github.com/Azure/AzRegionSelection/wiki/media/subscriptions.json) for a sample json file. Once the file is created, run the script as follows:
 
 ```powershell
 .\Get-AzureServices.ps1 -scopeType multiSubscription -workloadFile subscriptions.json -includeCost $true
