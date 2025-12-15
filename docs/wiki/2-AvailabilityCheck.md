@@ -40,5 +40,5 @@ Run the following command for each region:
 Get-Region.ps1 -region <target-region>
 # Example1: Get-Region.ps1 -region east us
 # Example2: Get-Region.ps1 -region west us
-# Example3: Get-Region.ps1 -region sweden central
+# Example3: Get-Region.ps1 -region swedencentral
 ```
