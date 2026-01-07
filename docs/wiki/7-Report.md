@@ -1,6 +1,6 @@
 # 7-Report
 
-This script generates formatted Excel (`.xlsx`)reports based on the output from the previous check script. The reports provide detailed information for each service, including:
+This script generates formatted Excel (`.xlsx`) reports based on the output from the previous check script. The reports provide detailed information for each service, including:
 
 ## Service Availability Report
 
