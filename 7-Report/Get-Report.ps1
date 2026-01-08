@@ -131,8 +131,9 @@ $xlsxFileName = "Availability_Report_$timestamp.xlsx"
 
 If ($availabilityInfoPath) {
     # Consider splitting into functions for better readability and maintainability
-    $reportData = @()
+
     foreach ($path in $availabilityInfoPath) {
+        $reportData = @()
         $rawdata = Get-Content $path | ConvertFrom-Json -Depth 10
         foreach ($item in $rawdata) {
             $resourceType = $item.ResourceType
@@ -142,7 +143,6 @@ If ($availabilityInfoPath) {
             If ($item.SelectedRegion.available -eq "true") {
                 $regionAvailability = "Available"
             }
-
             # if implementedSkus is exists and is not null
             if ($item.ImplementedSkus -and $item.ImplementedSkus[0] -ne "N/A") {
                 if ( $regionAvailability -eq "Available") {
@@ -167,13 +167,13 @@ If ($availabilityInfoPath) {
                 $reportData += $reportItem
             }
         }
+        $WorksheetName = "SvcAvail_$($regionHeader)"
+        $allProps = Get-Props -data $reportData
+        $lastColumnNumber = $allProps.Count
+        New-Worksheet -WorksheetName $WorksheetName -LastColumnNumber $lastColumnNumber -reportData $reportData -startColumnNumber 5 -cellValGreen @("Available", "N/A") -cellValRed @("Not available") -cellValYellow @("NotCoveredByScript")
     }
 }
 
-$WorksheetName = "ServiceAvailability"
-$allProps = Get-Props -data $reportData
-$lastColumnNumber = $allProps.Count
-New-Worksheet -WorksheetName $WorksheetName -LastColumnNumber $lastColumnNumber -reportData $reportData -startColumnNumber 5 -cellValGreen @("Available", "N/A") -cellValRed @("Not available") -cellValYellow @("NotCoveredByScript")
 
 If ($costComparisonPath) {
     $rawdata = Get-Content $costComparisonPath | ConvertFrom-Json -Depth 10
