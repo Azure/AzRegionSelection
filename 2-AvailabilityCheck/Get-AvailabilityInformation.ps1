@@ -40,7 +40,7 @@ function Out-JSONFile {
     $Data | ConvertTo-Json -Depth 100 | Out-File -FilePath "$(Get-Location)\$FileName" -Force
 }
 
-Function Convert-LocationsToRegionCodes {
+Function Convert-LocationsToRegionCode {
     param (
         [Parameter(Mandatory)][Object]$Data,
         [Parameter(Mandatory)][hashtable]$RegionMap
@@ -89,7 +89,7 @@ Function Import-Provider {
         }
     }
     # Convert location display names to region codes using the provided region map
-    $Providers = Convert-LocationsToRegionCodes -Data $Providers -RegionMap $Regions_All.Map
+    $Providers = Convert-LocationsToRegionCode -Data $Providers -RegionMap $Regions_All.Map
     # Save providers to a JSON file
     Out-JSONFile -Data $Providers -fileName "Azure_Providers.json"
     return @{
@@ -107,9 +107,9 @@ function Import-Region {
     $ConsolidatedRegions = @()
     $TotalRegions = $Response.value.Count
     $CurrentRegionIndex = 0
-    foreach ($Region in $Response.value | where { $_.metadata.regionType -eq "Physical" }) {
-        #Write-Output "$($region.name) is regionType: $($region.metadata.regionType)" | out-host}
-        $CurrentRegionIndex++
+        foreach ($Region in $Response.value | Where-Object { $_.metadata.regionType -eq "Physical" }) {
+            #Write-Output "$($region.name) is regionType: $($region.metadata.regionType)" | out-host}
+            $CurrentRegionIndex++
         Write-Output ("    Removing information for region {0:D03} of {1:D03}: {2}" -f $CurrentRegionIndex, $TotalRegions, $Region.displayName) | Out-Host
         if ($Region.metadata ) {
             $region.metadata.regionType -eq "Physical"
@@ -143,7 +143,7 @@ function Import-Region {
     }
 }
 
-Function Get-ResourceTypeParameters {
+Function Get-ResourceTypeParameter {
     param (
         [Parameter(Mandatory = $true)][string]$ResourceType
     )
@@ -233,7 +233,7 @@ Function Get-ResourceType {
     )
     $resourceObject = New-Object psobject
     Add-Member -InputObject $resourceObject -MemberType NoteProperty -Name "ResourceType" -Value $ResourceType
-    $resourceProps = Get-ResourceTypeParameters -ResourceType $ResourceType
+    $resourceProps = Get-ResourceTypeParameter -ResourceType $ResourceType
     if ($resourceProps) {
         "Processing resource type: $ResourceType"
         $outputFile = ($ResourceType -replace '[./]', '_') + ".json"
@@ -364,7 +364,7 @@ function Initialize-SKU2Region {
         }
     }
 }
-function Update-SKUProperties {
+function Update-SKUPropertySet {
     param (
         [Parameter(Mandatory)] [string]$RegionName,
         [Parameter(Mandatory)] [pscustomobject]$Object,
@@ -408,13 +408,13 @@ Foreach ($cResource in $overAllObj) {
             $regionCode = $region.RegionCode;
             If ($region.skus.count -ne 0) {
                 $skuFound = $region.skus | Where-Object { Compare-ObjectsStrict -Object1 ([PSCustomObject]$PSItem) -Object2 $sku -verbose }
-                If ($skuFound -ne $null) {
-                    "SUCCESS: SKU $sku found in region $regionCode";
-                    Update-SKUProperties -RegionName $regionCode -Object $availScope -availabilityStatus true -sku $sku
+                    If ($null -ne $skuFound) {
+                        "SUCCESS: SKU $sku found in region $regionCode";
+                        Update-SKUPropertySet -RegionName $regionCode -Object $availScope -availabilityStatus true -sku $sku
                 }
                 else {
                     "SKU $sku not found in region $regionCode";
-                    Update-SKUProperties -RegionName $regionCode -Object $availScope -availabilityStatus false -sku $sku
+                    Update-SKUPropertySet -RegionName $regionCode -Object $availScope -availabilityStatus false -sku $sku
                 }
             }
             else {
