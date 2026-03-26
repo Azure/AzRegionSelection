@@ -1,5 +1,4 @@
 BeforeAll {
-    $scriptPath = "$PSScriptRoot\Perform-RegionComparison.ps1"
 }
 
 Describe "Perform-RegionComparison.ps1 Tests" {
@@ -31,7 +30,7 @@ Describe "Perform-RegionComparison.ps1 Tests" {
         It "Should set correct batch sizes" {
             $meterIdBatchSize = 10
             $regionBatchSize = 10
-            
+
             $meterIdBatchSize | Should -Be 10
             $regionBatchSize | Should -Be 10
         }
@@ -77,7 +76,7 @@ Describe "Perform-RegionComparison.ps1 Tests" {
             $origPrice = 100.00
             $targetPrice = 90.00
             $difference = $targetPrice - $origPrice
-            
+
             $difference | Should -Be -10
         }
 
@@ -85,20 +84,20 @@ Describe "Perform-RegionComparison.ps1 Tests" {
             $origPrice = 100.00
             $targetPrice = 90.00
             $percentage = [math]::Round((($targetPrice - $origPrice) / $origPrice), 2)
-            
+
             $percentage | Should -Be -0.1
         }
 
         It "Should handle zero original price" {
             $origPrice = 0
             $targetPrice = 10.00
-            
+
             if ($origPrice -ne 0) {
                 $percentage = ($targetPrice - $origPrice) / $origPrice
             } else {
                 $percentage = $null
             }
-            
+
             $percentage | Should -BeNullOrEmpty
         }
     }
@@ -133,7 +132,7 @@ Describe "Perform-RegionComparison.ps1 Tests" {
         It "Should detect UoM mismatches" {
             $origUoM = "1 Hour"
             $targetUoM = "100 Hours"
-            
+
             $mismatch = $origUoM -ne $targetUoM
             $mismatch | Should -Be $true
         }

@@ -298,6 +298,9 @@ Function Get-ResourceType {
 }
 
 function Import-CurrentEnvironment {
+    param (
+        [Parameter(Mandatory = $true)][string]$SummaryFilePath
+    )
     # Check if the summary file exists and load it
     if (Test-Path $SummaryFilePath) {
         Write-Output "  Loading summary file: $SummaryFilePath" | Out-Host
@@ -365,6 +368,7 @@ function Initialize-SKU2Region {
     }
 }
 function Update-SKUPropertySet {
+    [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory)] [string]$RegionName,
         [Parameter(Mandatory)] [pscustomobject]$Object,
@@ -372,10 +376,10 @@ function Update-SKUPropertySet {
         [Parameter(Mandatory)] [PSCustomObject]$sku
     )
     $region = $Object.AllRegions | Where-Object { $_.region -eq $RegionName }
-    Write-Host "Updating SKUs in region '$RegionName'..."
+    Write-Output "Updating SKUs in region '$RegionName'..."
     foreach ($targetSku in $region.SKUs) {
         if (Compare-ObjectsStrict -Object1 $sku -Object2 $targetSku) {
-            Write-Host "Setting availability of '$($targetSku.Name)' to '$availabilityStatus' in region '$RegionName'"
+            Write-Output "Setting availability of '$($targetSku.Name)' to '$availabilityStatus' in region '$RegionName'"
             Add-Member -InputObject $targetSku -MemberType NoteProperty -Name "available" -Value $availabilityStatus -Force
         }
     }
@@ -390,7 +394,7 @@ $script:overAllObj = @()
 $Regions_All = Import-Region
 $Resources_All = (Import-Provider -uriRoot $uriRoot).Data
 # # Import current environment data from the summary file of script 1-Collect
-$AvailabilityMapping = (Import-CurrentEnvironment).Data
+$AvailabilityMapping = (Import-CurrentEnvironment -SummaryFilePath $summaryFilePath).Data
 # # Expand the current implementation to show availability across all Azure regions
 Expand-CurrentToGlobal
 # # Initialize SKU to region mapping for resources that have implemented SKUs
