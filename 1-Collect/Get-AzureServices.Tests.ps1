@@ -17,7 +17,6 @@ Describe "Get-AzureServices.ps1 Tests" {
         It "Should have required parameters defined" {
             $scriptAst = [System.Management.Automation.Language.Parser]::ParseFile($scriptPath, [ref]$null, [ref]$null)
             $params = $scriptAst.FindAll({$args[0] -is [System.Management.Automation.Language.ParameterAst]}, $true)
-            
             $paramNames = $params | ForEach-Object { $_.Name.VariablePath.UserPath }
             $paramNames | Should -Contain 'scopeType'
             $paramNames | Should -Contain 'fullOutputFile'
