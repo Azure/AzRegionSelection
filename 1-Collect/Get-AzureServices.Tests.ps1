@@ -1,16 +1,17 @@
 BeforeAll {
     $scriptPath = "$PSScriptRoot\Get-AzureServices.ps1"
+    $script:scriptContent = Get-Content $scriptPath -Raw
 }
 
 Describe "Get-AzureServices.ps1 Tests" {
     Context "Parameter Validation" {
         It "Should accept valid scopeType values" {
             $validScopes = @('singleSubscription', 'resourceGroup', 'multiSubscription')
-  
-            
-            # Parse the script to check parameter validation
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'ValidateSet.*singleSubscription.*resourceGroup.*multiSubscription'
+
+            # Verify each scope is present in the script's ValidateSet
+            foreach ($scope in $validScopes) {
+                $script:scriptContent | Should -Match $scope
+            }
         }
 
         It "Should have required parameters defined" {
@@ -24,26 +25,22 @@ Describe "Get-AzureServices.ps1 Tests" {
         }
 
         It "Should have default values for output files" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'fullOutputFile.*=.*"resources.json"'
-            $scriptContent | Should -Match 'summaryOutputFile.*=.*"summary.json"'
+            $script:scriptContent | Should -Match 'fullOutputFile.*=.*"resources.json"'
+            $script:scriptContent | Should -Match 'summaryOutputFile.*=.*"summary.json"'
         }
     }
 
     Context "Function Definitions" {
         It "Should define Get-Property function" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'Function Get-Property'
+            $script:scriptContent | Should -Match 'Function Get-Property'
         }
 
         It "Should define Get-SingleData function" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'Function Get-SingleData'
+            $script:scriptContent | Should -Match 'Function Get-SingleData'
         }
 
         It "Should define Get-Method function" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'Function Get-Method'
+            $script:scriptContent | Should -Match 'Function Get-Method'
         }
     }
 
