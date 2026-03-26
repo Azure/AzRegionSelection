@@ -10,10 +10,10 @@ Describe "Get-RessourcesFromAM.ps1 Tests" {
             $params = $scriptAst.FindAll({ $args[0] -is [System.Management.Automation.Language.ParameterAst] }, $true)
             $filePathParam = $params | Where-Object { $_.Name.VariablePath.UserPath -eq 'filePath' }
             $filePathParam | Should -Not -BeNullOrEmpty
-            
+
             # Check if parameter is mandatory
-            $isMandatory = $filePathParam.Attributes | Where-Object { 
-                $_.TypeName.Name -eq 'Parameter' -and 
+            $isMandatory = $filePathParam.Attributes | Where-Object {
+                $_.TypeName.Name -eq 'Parameter' -and
                 $_.NamedArguments.ArgumentName -contains 'Mandatory'
             }
             $isMandatory | Should -Not -BeNullOrEmpty
@@ -26,9 +26,9 @@ Describe "Get-RessourcesFromAM.ps1 Tests" {
     Context "Excel File Processing" {
         It "Should check for Excel file existence" {
             Mock Test-Path { return $false }
-            
+
             # Test would validate file existence check
-            
+           
             $true | Should -Be $true
         }
 
@@ -43,7 +43,7 @@ Describe "Get-RessourcesFromAM.ps1 Tests" {
         It "Should convert Premium disk SKU correctly" {
             $testSku = "Premium SSD P30"
             $expected = "Premium_LRS"
-            
+
             $result = switch -Wildcard ($testSku) {
                 "PremiumV2*" { "PremiumV2_LRS"; break }
                 "Premium*" { "Premium_LRS"; break }
@@ -52,13 +52,13 @@ Describe "Get-RessourcesFromAM.ps1 Tests" {
                 "Ultra*" { "UltraSSD_LRS"; break }
                 default { "Unknown" }
             }
-            
+
             $result | Should -Be $expected
         }
 
         It "Should convert StandardSSD disk SKU correctly" {
             $testSku = "StandardSSD E10"
-            
+
             $result = switch -Wildcard ($testSku) {
                 "PremiumV2*" { "PremiumV2_LRS"; break }
                 "Premium*" { "Premium_LRS"; break }
@@ -67,7 +67,7 @@ Describe "Get-RessourcesFromAM.ps1 Tests" {
                 "Ultra*" { "UltraSSD_LRS"; break }
                 default { "Unknown" }
             }
-            
+
             $result | Should -Be "StandardSSD_LRS"
         }
     }
