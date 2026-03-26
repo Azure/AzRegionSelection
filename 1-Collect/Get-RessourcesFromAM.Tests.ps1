@@ -28,7 +28,7 @@ Describe "Get-RessourcesFromAM.ps1 Tests" {
             Mock Test-Path { return $false }
 
             # Test would validate file existence check
-           
+
             $true | Should -Be $true
         }
 

@@ -71,7 +71,7 @@ Function Import-Provider {
     # This function retrieves all available Azure providers and their resource types, including locations.
     Write-Output "Retrieving all available providers" | Out-Host
     $Response = (Invoke-AzRestMethod -Uri "$uriRoot/providers?api-version=2021-04-01" -Method Get).Content | ConvertFrom-Json -depth 100
-    
+
     # Transform the response to the desired structure and remove unwanted properties
     $Providers = foreach ($provider in $Response.value) {
         # Build an array of resource types using plain hashtables
@@ -224,7 +224,7 @@ Function Expand-NestedCollection {
             }
         }
         $script:SKUs = $lSkus
-    } 
+    }
 }
 
 Function Get-ResourceType {
@@ -247,7 +247,7 @@ Function Get-ResourceType {
                 $baseObject = New-Object psobject
                 Add-Member -InputObject $baseObject -MemberType NoteProperty -Name "regionCode" -Value $region
                 $uri = $uri01 -f $subscriptionId, $region
-        
+
                 "Invoke-AzRestMethod -Uri $uri -Method Get"
                 $Response = (Invoke-AzRestMethod -Uri $uri -Method Get).Content | ConvertFrom-Json -depth 100
                 If ($response.error.code -ne 'NoRegisteredProviderFound') {
@@ -256,14 +256,14 @@ Function Get-ResourceType {
                         $Response = $Response.Value
                     }
                     Expand-NestedCollection -InputObjects $response -Schema $propertyFilter
-                    Add-Member -InputObject $baseObject -MemberType NoteProperty -Name "skus" -Value $Skus 
+                    Add-Member -InputObject $baseObject -MemberType NoteProperty -Name "skus" -Value $Skus
                 }
                 else {
                     "No SKUs found for region $region"
                     $baseObject | Add-Member -MemberType NoteProperty -Name "skus" -Value @()
                 }
                 $outArray += $baseObject
-            } 
+            }
         }
         Else {
             "This api call gets all skus for all regions in one call"
@@ -279,7 +279,7 @@ Function Get-ResourceType {
                 $skusForRegion = $Response | Where-Object { $_.locations -contains $region }
                 If ($skusForRegion) {
                     Expand-NestedCollection -InputObjects $skusForRegion -Schema $propertyFilter
-                    Add-Member -InputObject $baseObject -MemberType NoteProperty -Name "skus" -Value $Skus 
+                    Add-Member -InputObject $baseObject -MemberType NoteProperty -Name "skus" -Value $Skus
                 }
                 else {
                     "No SKUs found for region $region"
@@ -391,7 +391,7 @@ $Regions_All = Import-Region
 $Resources_All = (Import-Provider -uriRoot $uriRoot).Data
 # # Import current environment data from the summary file of script 1-Collect
 $AvailabilityMapping = (Import-CurrentEnvironment).Data
-# # Expand the current implementation to show availability across all Azure regions 
+# # Expand the current implementation to show availability across all Azure regions
 Expand-CurrentToGlobal
 # # Initialize SKU to region mapping for resources that have implemented SKUs
 Initialize-SKU2Region
@@ -404,23 +404,23 @@ Foreach ($cResource in $overAllObj) {
     $availScope = $availabilityMapping | Where-Object { $psitem.ResourceType -eq $cResource.ResourceType }
     $cResource.ResourceType
     Foreach ($sku in $availScope.ImplementedSkus) {
-        Foreach ($region in $cResource.Availability) { 
-            $regionCode = $region.RegionCode; 
+        Foreach ($region in $cResource.Availability) {
+            $regionCode = $region.RegionCode;
             If ($region.skus.count -ne 0) {
                 $skuFound = $region.skus | Where-Object { Compare-ObjectsStrict -Object1 ([PSCustomObject]$PSItem) -Object2 $sku -verbose }
-                If ($skuFound -ne $null) { 
+                If ($skuFound -ne $null) {
                     "SUCCESS: SKU $sku found in region $regionCode";
                     Update-SKUProperties -RegionName $regionCode -Object $availScope -availabilityStatus true -sku $sku
-                } 
-                else { 
-                    "SKU $sku not found in region $regionCode"; 
+                }
+                else {
+                    "SKU $sku not found in region $regionCode";
                     Update-SKUProperties -RegionName $regionCode -Object $availScope -availabilityStatus false -sku $sku
                 }
             }
             else {
                 "No SKUs found for region $regionCode";
             }
-        }    
+        }
     }
     $cResource.ResourceType
 }
