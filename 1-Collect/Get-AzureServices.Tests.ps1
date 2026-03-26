@@ -6,6 +6,7 @@ Describe "Get-AzureServices.ps1 Tests" {
     Context "Parameter Validation" {
         It "Should accept valid scopeType values" {
             $validScopes = @('singleSubscription', 'resourceGroup', 'multiSubscription')
+  
             
             # Parse the script to check parameter validation
             $scriptContent = Get-Content $scriptPath -Raw

@@ -159,7 +159,6 @@ Function Invoke-CmdLine {
     Set-Variable -Name $outputVarName -Value $cmdResult -Scope Script
 }
 
-
 function Get-rType {
     param (
         [Parameter(Mandatory = $true)] [string] $filePath,
