@@ -12,7 +12,7 @@ function Get-AzureRetailPrice {
         N/A
     .EXAMPLE
         Get-AzureRetailPrice -armSkuName Standard_B2ms -armRegionName swedencentral -priceType Consumption -serviceFamily Compute | FT -AutoSize
-        
+
         - List all _consumption_ prices for _Standard_B2ms_ VMs in the _Sweden Central_ Azure Region
         - Format the output as a table with _AutoSize_
     .EXAMPLE
@@ -32,7 +32,7 @@ function Get-AzureRetailPrice {
 
         - List all _consumption_ prices for _Standard_B2ms_ VMs in the _Sweden Central_ Azure Region
         - Write the output to a file in JSON format
-    #>    
+    #>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $False)]
@@ -66,7 +66,7 @@ function Get-AzureRetailPrice {
         [Parameter(Mandatory = $False)]
         [string]$currencyCode = 'USD'
     )
-    
+
     # Initialize Variables
     $query = ''
     $paramCounter = 1

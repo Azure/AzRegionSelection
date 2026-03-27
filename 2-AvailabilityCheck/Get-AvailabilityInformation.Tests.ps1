@@ -10,7 +10,7 @@ Describe "Get-AvailabilityInformation.ps1 Tests" {
         }
 
         It "Should define Convert-LocationsToRegionCodes function" {
-            $scriptContent | Should -Match 'Function Convert-LocationsToRegionCodes'
+            $scriptContent | Should -Match 'Function Convert-LocationsToRegionCode'
         }
 
         It "Should define Import-Provider function" {

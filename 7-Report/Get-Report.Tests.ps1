@@ -1,5 +1,6 @@
 BeforeAll {
-    $scriptPath = "$PSScriptRoot\Get-Report.ps1"
+    $script:scriptPath = "$PSScriptRoot\Get-Report.ps1"
+    $script:scriptContent = Get-Content $script:scriptPath -Raw
 }
 
 Describe "Get-Report.ps1 Tests" {
@@ -17,23 +18,19 @@ Describe "Get-Report.ps1 Tests" {
 
     Context "Helper Functions" {
         It "Should define Get-Props function" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'Function Get-Props'
+            $script:scriptContent | Should -Match 'Function Get-Props'
         }
 
         It "Should define Set-ColumnColor function" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'Function Set-ColumnColor'
+            $script:scriptContent | Should -Match 'Function Set-ColumnColor'
         }
 
         It "Should define New-Worksheet function" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'Function New-Worksheet'
+            $script:scriptContent | Should -Match 'Function New-Worksheet'
         }
 
         It "Should define Set-SvcAvailReportObj function" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'Function Set-SvcAvailReportObj'
+            $script:scriptContent | Should -Match 'Function Set-SvcAvailReportObj'
         }
     }
 
@@ -67,7 +64,7 @@ Describe "Get-Report.ps1 Tests" {
         It "Should generate timestamped filename" {
             $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
             $filename = "Availability_Report_$timestamp.xlsx"
-            
+
             $filename | Should -Match "^Availability_Report_\d{8}_\d{6}\.xlsx$"
         }
     }
@@ -76,7 +73,7 @@ Describe "Get-Report.ps1 Tests" {
         It "Should define header colors" {
             $headerColor = "RoyalBlue"
             $headerFontColor = "White"
-            
+
             $headerColor | Should -Be "RoyalBlue"
             $headerFontColor | Should -Be "White"
         }
@@ -85,7 +82,7 @@ Describe "Get-Report.ps1 Tests" {
             $greenValues = @("Available", "N/A")
             $redValues = @("Not available")
             $yellowValues = @("NotCoveredByScript")
-            
+
             $greenValues | Should -Contain "Available"
             $redValues | Should -Contain "Not available"
             $yellowValues | Should -Contain "NotCoveredByScript"
@@ -111,16 +108,15 @@ Describe "Get-Report.ps1 Tests" {
                 [PSCustomObject]@{ OrigMeterId = "meter1"; Region = "westus"; RetailPrice = 12.0 }
                 [PSCustomObject]@{ OrigMeterId = "meter2"; Region = "eastus"; RetailPrice = 20.0 }
             )
-            
+
             $uniqueMeters = $mockData | Select-Object -Property OrigMeterId -Unique
             $uniqueMeters.Count | Should -Be 2
         }
 
         It "Should create regional pricing properties" {
             $region = "eastus"
-            $price = 10.5
             $propertyName = "$region-RetailPrice"
-            
+
             $propertyName | Should -Be "eastus-RetailPrice"
         }
 
@@ -137,14 +133,14 @@ Describe "Get-Report.ps1 Tests" {
         It "Should handle N/A SKUs" {
             $implementedSkus = @("N/A")
             $isNotNA = $implementedSkus[0] -ne "N/A"
-            
+
             $isNotNA | Should -Be $false
         }
 
         It "Should join implemented regions" {
             $regions = @("eastus", "westus", "northeurope")
             $joined = $regions -join ", "
-            
+
             $joined | Should -Be "eastus, westus, northeurope"
         }
     }
