@@ -32,6 +32,7 @@ jobs:
           VALIDATE_MARKDOWN: true
           VALIDATE_POWERSHELL: true
           VALIDATE_YAML: true
+          POWERSHELL_CONFIG_FILE: PSScriptAnalyzerSettings.psd1
           #YAMLLINT_CONFIG_FILE: .github/linters/.yamllint.yml
           #VALIDATE_EDITORCONFIG: true
           # Disable errors to only generate a report

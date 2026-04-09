@@ -17,8 +17,8 @@ Describe "Get-Report.ps1 Tests" {
     }
 
     Context "Helper Functions" {
-        It "Should define Get-Props function" {
-            $script:scriptContent | Should -Match 'Function Get-Props'
+        It "Should define Get-PropertySet function" {
+            $script:scriptContent | Should -Match 'Function Get-PropertySet'
         }
 
         It "Should define Set-ColumnColor function" {
