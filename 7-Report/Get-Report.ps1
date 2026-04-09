@@ -18,8 +18,6 @@ param(
 )
 
 Function Set-ColumnColor {
-    [CmdletBinding(SupportsShouldProcess = $true)]
-
     param(
         [Parameter(Mandatory = $true)] [object]$startColumn,
         [Parameter(Mandatory = $true)] [string[]]$cellValGreen,
@@ -46,7 +44,6 @@ Function Set-ColumnColor {
 }
 
 Function New-Worksheet {
-    [CmdletBinding(SupportsShouldProcess = $true)]
     param (
         [Parameter(Mandatory = $true)][string]$WorksheetName,
         [Parameter(Mandatory = $true)][int]$LastColumnNumber,
@@ -97,8 +94,6 @@ Function Get-Props {
 }
 
 Function Set-SvcAvailReportObj {
-    [CmdletBinding(SupportsShouldProcess = $true)]
-
     param (
         [string]$resourceType,
         [int]$resourceCount,
