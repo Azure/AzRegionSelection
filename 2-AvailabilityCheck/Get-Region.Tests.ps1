@@ -1,18 +1,16 @@
 BeforeAll {
-    $scriptPath = "$PSScriptRoot\Get-Region.ps1"
+    $script:scriptContent = Get-Content -Path "$PSScriptRoot\Get-Region.ps1" -Raw
 }
 
 Describe "Get-Region.ps1 Tests" {
     Context "Parameter Validation" {
         It "Should require Region parameter" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match '\[Parameter\(Mandatory\s*=\s*\$true'
-            $scriptContent | Should -Match '\[string\]\$Region'
+            $script:scriptContent | Should -Match '\[Parameter\(Mandatory\s*=\s*\$true'
+            $script:scriptContent | Should -Match '\[string\]\$Region'
         }
 
         It "Should have HelpMessage for Region parameter" {
-            $scriptContent = Get-Content $scriptPath -Raw
-            $scriptContent | Should -Match 'HelpMessage.*region'
+            $script:scriptContent | Should -Match 'HelpMessage.*region'
         }
     }
 
@@ -39,7 +37,7 @@ Describe "Get-Region.ps1 Tests" {
                     )
                 }
             )
-            
+
             $filtered = $mockData[0].AllRegions | Where-Object { $_.region -eq $testRegion }
             $filtered.Count | Should -Be 1
             $filtered[0].region | Should -Be $testRegion
@@ -50,7 +48,7 @@ Describe "Get-Region.ps1 Tests" {
         It "Should generate region-specific output filename" {
             $testRegion = "eastus"
             $expectedFile = "Availability_Mapping_eastus.json"
-            
+
             $outputFile = "Availability_Mapping_" + ($testRegion -replace "\s", "_") + ".json"
             $outputFile | Should -Be $expectedFile
         }
@@ -58,7 +56,7 @@ Describe "Get-Region.ps1 Tests" {
         It "Should handle region names with spaces" {
             $testRegion = "East US"
             $expectedFile = "Availability_Mapping_East_US.json"
-            
+
             $outputFile = "Availability_Mapping_" + ($testRegion -replace "\s", "_") + ".json"
             $outputFile | Should -Be $expectedFile
         }
@@ -72,10 +70,10 @@ Describe "Get-Region.ps1 Tests" {
                     [PSCustomObject]@{ region = "eastus"; available = "true" }
                 )
             }
-            
+
             $regionMatch = $mockResource.AllRegions | Where-Object { $_.region -eq "eastus" }
             $mockResource | Add-Member -Force -MemberType NoteProperty -Name SelectedRegion -Value $regionMatch
-            
+
             $mockResource.SelectedRegion | Should -Not -BeNullOrEmpty
             $mockResource.SelectedRegion.region | Should -Be "eastus"
         }

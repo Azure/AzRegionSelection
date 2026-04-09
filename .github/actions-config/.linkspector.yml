@@ -1,0 +1,18 @@
+---
+dirs:
+  - ./
+#baseUrl: https://example.com
+# ignorePatterns:
+#   - pattern: '^https://example.com/skip/.*$'
+#   - pattern: "^(ftp)://[^\\s/$?#]*\\.[^\\s]*$"
+# replacementPatterns:
+#   - pattern: "(https?://example.com)/(\\w+)/(\\d+)"
+#     replacement: '$1/id/$3'
+#   - pattern: "\\[([^\\]]+)\\]\\((https?://example.com)/file\\)"
+#     replacement: '<a href="$2/file">$1</a>'
+aliveStatusCodes:
+  - 200
+  - 201
+  - 204
+useGitIgnore: true
+modifiedFilesOnly: false

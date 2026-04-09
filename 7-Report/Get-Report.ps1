@@ -78,7 +78,7 @@ Function New-Worksheet {
 }
 
 # Collect all property names in first-seen order
-Function Get-Props {
+Function Get-PropertySet {
     param (
         [array]$data
     )
@@ -112,7 +112,7 @@ Function Set-SvcAvailReportObj {
     elseif ($skuAvailability -eq "") {
         $skuAvailability = "NotCoveredByScript"
     }
-    
+
     $reportItem = [PSCustomObject]@{
         ResourceType        = $resourceType
         ResourceCount       = $resourceCount
@@ -168,7 +168,7 @@ If ($availabilityInfoPath) {
             }
         }
         $WorksheetName = "SvcAvail_$($regionHeader)"
-        $allProps = Get-Props -data $reportData
+        $allProps = Get-PropertySet -data $reportData
         $lastColumnNumber = $allProps.Count
         New-Worksheet -WorksheetName $WorksheetName -LastColumnNumber $lastColumnNumber -reportData $reportData -startColumnNumber 5 -cellValGreen @("Available", "N/A") -cellValRed @("Not available") -cellValYellow @("NotCoveredByScript")
     }
@@ -212,7 +212,7 @@ If ($costComparisonPath) {
         $costReportData += $costReportItem
     }
     $WorksheetName = "CostComparison"
-    $allProps = Get-Props -data $costReportData
+    $allProps = Get-PropertySet -data $costReportData
     $lastColumnNumber = $allProps.Count
     New-Worksheet -WorksheetName $WorksheetName -LastColumnNumber $lastColumnNumber -reportData $costReportData
 }

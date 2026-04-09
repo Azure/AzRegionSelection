@@ -1,5 +1,4 @@
 BeforeAll {
-    $scriptPath = "$PSScriptRoot\Get-CostInformation.ps1"
 }
 
 Describe "Get-CostInformation.ps1 Tests" {
@@ -7,7 +6,7 @@ Describe "Get-CostInformation.ps1 Tests" {
         It "Should have default date parameters" {
             $defaultStartDate = (Get-Date).AddMonths(-1).ToString("yyyy-MM-01")
             $defaultEndDate = (Get-Date).AddDays(-1 * (Get-Date).Day).ToString("yyyy-MM-dd")
-            
+
             $defaultStartDate | Should -Match "^\d{4}-\d{2}-01$"
             $defaultEndDate | Should -Match "^\d{4}-\d{2}-\d{2}$"
         }
@@ -93,11 +92,11 @@ Describe "Get-CostInformation.ps1 Tests" {
         It "Should limit to first subscription in test mode" {
             $testSubscriptions = @("sub1", "sub2", "sub3")
             $testMode = $true
-            
+
             if ($testMode) {
                 $testSubscriptions = @($testSubscriptions[0])
             }
-            
+
             $testSubscriptions.Count | Should -Be 1
         }
     }
