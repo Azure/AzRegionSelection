@@ -4,3 +4,4 @@ rules:
     max: 900
     allow-non-breakable-words: true
     allow-non-breakable-inline-mappings: false
+  truthy: disable
