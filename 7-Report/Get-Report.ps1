@@ -18,7 +18,8 @@ param(
 )
 
 Function Set-ColumnColor {
-    [CmdletBinding(SupportsShouldProcess)]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)] [object]$startColumn,
         [Parameter(Mandatory = $true)] [string[]]$cellValGreen,
@@ -45,7 +46,8 @@ Function Set-ColumnColor {
 }
 
 Function New-Worksheet {
-    [CmdletBinding(SupportsShouldProcess)]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)][string]$WorksheetName,
         [Parameter(Mandatory = $true)][int]$LastColumnNumber,
@@ -96,7 +98,8 @@ Function Get-PropertySet {
 }
 
 Function Set-SvcAvailReportObj {
-    [CmdletBinding(SupportsShouldProcess)]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [CmdletBinding()]
     param (
         [string]$resourceType,
         [int]$resourceCount,
