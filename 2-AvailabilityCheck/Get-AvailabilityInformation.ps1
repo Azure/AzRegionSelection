@@ -368,6 +368,7 @@ function Initialize-SKU2Region {
     }
 }
 function Update-SKUPropertySet {
+    [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)] [string]$RegionName,
         [Parameter(Mandatory)] [pscustomobject]$Object,
