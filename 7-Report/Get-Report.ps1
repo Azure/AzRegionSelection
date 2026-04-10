@@ -18,7 +18,7 @@ param(
 )
 
 Function Set-ColumnColor {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', 'This helper only applies in-memory formatting to the Excel worksheet during report generation and does not perform external or destructive state changes.')]
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)] [object]$startColumn,
