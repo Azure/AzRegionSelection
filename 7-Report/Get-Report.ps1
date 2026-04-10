@@ -99,7 +99,7 @@ Function Get-PropertySet {
 }
 
 Function Set-SvcAvailReportObj {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', 'This helper only constructs and returns an in-memory PSCustomObject for reporting and does not modify external state.')]
     [CmdletBinding()]
     param (
         [string]$resourceType,
