@@ -216,7 +216,7 @@ Function Invoke-CostReportSchedule {
         [Parameter(Mandatory = $true)] [string]$SubscriptionId
     )
     $uri = "https://management.azure.com/subscriptions/$($SubscriptionId)/providers/Microsoft.CostManagement/generateCostDetailsReport?api-version=2025-03-01"
-    $startDate = (Get-Date).AddDays(-1)
+    $startDate = (Get-Date).AddDays(-30)
     $endDate = (Get-Date)
     # Define the request body
     $body = @{
@@ -356,7 +356,7 @@ $baseResult | ForEach-Object {
         ipAddress              = $ipAddress
         meterIds               = @()
     }
-    If ($includeCost) {
+    If ($includeCost -and $null -ne $costDetails) {
         Get-MeterId -ResourceId $resourceId -csvObject $costDetails
         # add meterIds to the output object
         $outObject.meterIds += $meterIds
